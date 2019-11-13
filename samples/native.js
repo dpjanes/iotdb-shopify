@@ -24,5 +24,37 @@
 
 const _ = require("iotdb-helpers")
 const fs = require("iotdb-fs")
+const fetch = require("iotdb-fetch")
+
+const minimist = require("minimist")
+
+const ad = minimist(process.argv.slice(2));
+const action_name = ad._[0]
 
 const shopifyd = require("./shopify.json")
+
+const actions = []
+const action = name => {
+    actions.push(name)
+
+    return action_name === name
+}
+
+
+if (action("products.list")) {
+    _.promise({
+        url: `https:${shopifyd.api_key}:${shopifyd.password}@${shopifyd.host}/admin/api/2019-10/products.json`,
+        query: null,
+    })
+        .then(fetch.get)
+        .then(fetch.go.json)
+        .make(sd => {
+            console.log("+", JSON.stringify(sd.json, null, 2))
+        })
+        .except(_.error.log)
+        
+} else if (!action_name) {
+    console.log("#", "action required - should be one of:", actions.join(", "))
+} else {
+    console.log("#", "unknown action - should be one of:", actions.join(", "))
+}
