@@ -25,6 +25,7 @@
 const _ = require("iotdb-helpers")
 const fs = require("iotdb-fs")
 const fetch = require("iotdb-fetch")
+const links = require("iotdb-links")
 
 const minimist = require("minimist")
 
@@ -50,6 +51,14 @@ if (action("products.list")) {
         .then(fetch.go.json)
         .make(sd => {
             console.log("+", JSON.stringify(sd.json, null, 2))
+
+            _.flatten(_.d.list(sd.headers, "link", [])
+                .map(link => links.parse.flat(link)))
+                .filter(linkd => linkd.rel === "next")
+                .map(linkd => linkd.url)
+                .forEach(linkd => {
+                    console.log("+", "next", linkd)
+                })
         })
         .except(_.error.log)
         

@@ -1,15 +1,14 @@
 {
-    "author": "David P. Janes <davidjanes@iotdb.org>",
+    "author": "David P. Janes <davidjanes@iotdb.org>", 
     "bugs": {
         "url": "https://github.com/dpjanes/iotdb-shopify/issues"
     }, 
     "dependencies": {
-        "iotdb-helpers": "~3.2.3", 
-        "shopify": "~2.15.0"
+        "iotdb-fetch": "~3.2.3", 
+        "iotdb-helpers": "~3.3.16", 
+        "iotdb-links": "~1.0.2"
     }, 
-    "description": "Pipe Oriented Programming", 
-    "devDependencies": {
-    }, 
+    "description": "POP Interface to Shopify API", 
     "homepage": "https://github.com/dpjanes/node-iotdb", 
     "license": "Apache-2.0", 
     "main": "index.js", 
