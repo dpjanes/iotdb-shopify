@@ -1,5 +1,5 @@
 /*
- *  logger.js
+ *  samples/native.js
  *
  *  David Janes
  *  IOTDB.org
@@ -23,17 +23,6 @@
 "use strict"
 
 const _ = require("iotdb-helpers")
+const fs = require("iotdb-fs")
 
-const path = require("path")
-
-const _root = path.dirname(path.dirname(__filename))
-
-const logger = (source) => _.logger.make({
-    name: "iotdb-shopify",
-    source: source.substring(_root.length + 1).replace(/[.]js$/, ""),
-})
-
-/**
- *  API
- */
-module.exports = logger
+const shopifyd = require("./shopify.json")
