@@ -1,9 +1,9 @@
 /*
- *  lib/initialize.js
+ *  products/index.js
  *
  *  David Janes
  *  IOTDB.org
- *  2019-11-13
+ *  2019-12-04
  *
  *  Copyright (2013-2020) David P. Janes
  *
@@ -22,35 +22,8 @@
 
 "use strict"
 
-const _ = require("iotdb-helpers")
-
-const logger = require("../logger")(__filename)
-
-/**
- */
-const initialize = _.promise(self => {
-    _.promise.validate(self, initialize)
-
-    self.shopify = {
-        cfg: self.shopify$cfg,
-    }
-})
-
-initialize.method = "initialize"
-initialize.description = `Set up initial connection to Shopify Admin API`
-initialize.requires = {
-    shopify$cfg: {
-        api_key: _.is.String,
-        password: _.is.String,
-        host: _.is.String,
-        shared_secret: _.is.String,
-    },
-}
-initialize.produces = {
-    shopify: _.is.Dictionary,
-}
-
-/**
- *  API
- */
-exports.initialize = initialize
+module.exports = Object.assign(
+    {},
+    require("./list"),
+    {}
+)
