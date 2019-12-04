@@ -44,7 +44,7 @@ const action = name => {
 
 if (action("products.list")) {
     _.promise({
-        url: `https:${shopifyd.api_key}:${shopifyd.password}@${shopifyd.host}/admin/api/2019-10/products.json`,
+        url: `https://${shopifyd.api_key}:${shopifyd.password}@${shopifyd.host}/admin/api/2019-10/products.json`,
         query: null,
     })
         .then(fetch.get)

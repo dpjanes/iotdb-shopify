@@ -26,6 +26,8 @@ const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
 const links = require("iotdb-links")
 
+const URL = require("url").URL
+
 const logger = require("../logger")(__filename)
 
 /**
@@ -35,8 +37,14 @@ const list = _.promise((self, done) => {
         .validate(list)
         .make(sd => {
             sd.products = []
-            sd.cursor = null
-            sd.url = `https:${sd.shopify.cfg.api_key}:${sd.shopify.cfg.password}@${sd.shopify.cfg.host}/admin/api/2019-10/products.json`
+            sd.cursor = {}
+            sd.url = `https://${sd.shopify.cfg.api_key}:${sd.shopify.cfg.password}@${sd.shopify.cfg.host}/admin/api/2019-10/products.json`
+
+            if (sd.pager) {
+                sd.url = `${sd.url}?page_info=${sd.pager}`
+            }
+
+            console.log("GET", sd.url)
         })
         .then(fetch.get)
         .then(fetch.go.json)
@@ -49,9 +57,13 @@ const list = _.promise((self, done) => {
                 .map(linkd => linkd.url)
                 .find(url => url)
             if (next) {
-                sd.cursor = {
-                    next: next,
-                    has_next: true,
+                const url = new URL(next)
+                const page_info = url.searchParams.get("page_info")
+                if (_.is.String(page_info)) {
+                    sd.cursor = {
+                        next: page_info,
+                        has_next: true,
+                    }
                 }
             }
         })
@@ -65,6 +77,7 @@ list.requires = {
     query: _.is.Dictionary,
 }
 list.accepts = {
+    pager: _.is.String,
 }
 list.produces = {
     products: _.is.Array.of.Dictionary,
@@ -75,8 +88,28 @@ list.params = {
 }
 list.p = _.p(list)
 
+/**
+ */
+const all = _.promise((self, done) => {
+    _.promise(self)
+        .validate(all)
+        
+        .then(list.p({}))
+
+        .end(done, self, all)
+})
+
+all.method = "products.list.all"
+all.description = `List everything`
+all.requires = {
+}
+all.produces = {
+    products: _.is.Array.of.Dictionary,
+    cursor: _.is.Dictionary,
+}
 
 /**
  *  API
  */
 exports.list = list
+exports.list.all = all

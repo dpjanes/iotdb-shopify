@@ -38,7 +38,6 @@ const action = name => {
     return action_name === name
 }
 
-
 if (action("products.list")) {
     _.promise({
         shopify$cfg: require("./shopify.json"),
@@ -51,7 +50,21 @@ if (action("products.list")) {
             console.log("+", JSON.stringify(sd.cursor, null, 2))
         })
         .except(_.error.log)
-        
+} else if (action("products.list.all")) {
+    _.promise({
+        shopify$cfg: require("./shopify.json"),
+        verbose: true,
+    })
+        .then(shopify.initialize)
+        .page({
+            batch: shopify.products.list.all,
+            outputs: "products",
+            output_selector: sd => sd.products,
+        })
+        .make(sd => {
+            console.log("+", JSON.stringify(sd.products.length, null, 2))
+        })
+        .except(_.error.log)
 } else if (!action_name) {
     console.log("#", "action required - should be one of:", actions.join(", "))
 } else {
