@@ -87,6 +87,32 @@ if (action("product.list")) {
             console.log("+", sd.product)
         })
         .except(_.error.log)
+} else if (action("product.patch")) {
+    _.promise({
+        shopify$cfg: require("./shopify.json"),
+        verbose: true,
+    })
+        .then(shopify.initialize)
+        .then(shopify.product.get.p(4378702610571))
+        .make(sd => {
+            console.log("+", "old", sd.product.title)
+            const match = sd.product.title.match(/^(.*) - (\d+)$/)
+            if (!match) {
+                sd.product.title = `${sd.product.title} - 1`
+            } else {
+                sd.product.title = `${match[1]} - ${parseInt(match[2]) + 1}`
+            }
+
+            sd.product_id = sd.product.id
+            sd.product = {
+                title: sd.product.title,
+            }
+        })
+        .then(shopify.product.patch)
+        .make(sd => {
+            console.log("+", "new", sd.product.title)
+        })
+        .except(_.error.log)
 } else if (!action_name) {
     console.log("#", "action required - should be one of:", actions.join(", "))
 } else {

@@ -27,5 +27,6 @@ module.exports = Object.assign(
     require("./list"),
     require("./count"),
     require("./get"),
+    require("./patch"),
     {}
 )

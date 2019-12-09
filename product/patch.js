@@ -1,5 +1,5 @@
 /*
- *  product/get.js
+ *  product/patch.js
  *
  *  David Janes
  *  IOTDB.org
@@ -33,9 +33,9 @@ const _util = require("./_util")
 
 /**
  */
-const get = _.promise((self, done) => {
+const patch = _.promise((self, done) => {
     _.promise(self)
-        .validate(get)
+        .validate(patch)
 
         .make(sd => {
             sd.url = `${_util.api(sd)}/products/${sd.product_id}.json`
@@ -43,31 +43,38 @@ const get = _.promise((self, done) => {
             if (sd.query) {
                 sd.url = _util.extend_with_query(sd.url, sd.query)
             }
+
+            sd.json = {
+                product: sd.product,
+            }
         })
-        .then(fetch.get)
+        .then(fetch.put)
+        .then(fetch.body.json)
         .then(fetch.go.json)
         .make(sd => {
             sd.product = sd.json && sd.json.product || null
         })
 
-        .end(done, self, get)
+        .end(done, self, patch)
 })
 
-get.method = "product.get"
-get.description = `Get a Product`
-get.requires = {
+patch.method = "product.patch"
+patch.description = `Patch Product`
+patch.requires = {
     shopify: _.is.Dictionary,
     product_id: [ _.is.String, _.is.Number ],
-}
-get.produces = {
     product: _.is.JSON,
 }
-get.params = {
-    product_id: _.p.normal,
+patch.produces = {
+    product: _.is.JSON,
 }
-get.p = _.p(get)
+patch.params = {
+    product_id: _.p.normal,
+    product: _.p.normal,
+}
+patch.p = _.p(patch)
 
 /**
  *  API
  */
-exports.get = get
+exports.patch = patch
