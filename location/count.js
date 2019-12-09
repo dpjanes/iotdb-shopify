@@ -24,7 +24,6 @@
 
 const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
-const links = require("iotdb-links")
 
 const logger = require("../logger")(__filename)
 const _util = require("../lib/_util")

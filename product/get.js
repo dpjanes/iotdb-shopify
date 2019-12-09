@@ -24,9 +24,6 @@
 
 const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
-const links = require("iotdb-links")
-
-const URL = require("url").URL
 
 const logger = require("../logger")(__filename)
 const _util = require("../lib/_util")
@@ -39,10 +36,6 @@ const get = _.promise((self, done) => {
 
         .make(sd => {
             sd.url = `${_util.api(sd)}/products/${sd.product_id}.json`
-
-            if (sd.query) {
-                sd.url = _util.extend_with_query(sd.url, sd.query)
-            }
         })
         .then(fetch.get)
         .then(fetch.go.json)
