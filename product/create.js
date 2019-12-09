@@ -1,5 +1,5 @@
 /*
- *  product/patch.js
+ *  product/create.js
  *
  *  David Janes
  *  IOTDB.org
@@ -33,47 +33,47 @@ const _util = require("./_util")
 
 /**
  */
-const patch = _.promise((self, done) => {
+const create = _.promise((self, done) => {
     _.promise(self)
-        .validate(patch)
+        .validate(create)
 
         .make(sd => {
-            sd.url = `${_util.api(sd)}/products/${sd.product.id}.json`
+            sd.url = `${_util.api(sd)}/products.json`
 
             sd.json = {
                 product: sd.product,
             }
         })
-        .then(fetch.put)
+        .then(fetch.post)
         .then(fetch.body.json)
         .then(fetch.go.json)
         .make(sd => {
             sd.product = sd.json && sd.json.product || null
         })
 
-        .end(done, self, patch)
+        .end(done, self, create)
 })
 
-patch.method = "product.patch"
-patch.description = `Patch Product`
-patch.requires = {
+create.method = "product.create"
+create.description = `Create a new Product`
+create.requires = {
     shopify: _.is.Dictionary,
     product: {
-        id: _.is.Number,
+        title: _.is.String,
     },
 }
-patch.accepts = {
+create.accepts = {
     product: _.is.JSON,
 }
-patch.produces = {
+create.produces = {
     product: _.is.JSON,
 }
-patch.params = {
+create.params = {
     product: _.p.normal,
 }
-patch.p = _.p(patch)
+create.p = _.p(create)
 
 /**
  *  API
  */
-exports.patch = patch
+exports.create = create

@@ -113,6 +113,19 @@ if (action("product.list")) {
             console.log("+", "new", sd.product.title)
         })
         .except(_.error.log)
+} else if (action("product.create")) {
+    _.promise({
+        shopify$cfg: require("./shopify.json"),
+        verbose: true,
+    })
+        .then(shopify.initialize)
+        .then(shopify.product.create.p({
+            title: "New Product " + _.timestamp.make(),
+        }))
+        .make(sd => {
+            console.log("+", sd.product)
+        })
+        .except(_.error.log)
 } else if (!action_name) {
     console.log("#", "action required - should be one of:", actions.join(", "))
 } else {
