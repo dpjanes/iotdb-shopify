@@ -29,22 +29,25 @@ const links = require("iotdb-links")
 const URL = require("url").URL
 
 const logger = require("../logger")(__filename)
+const _util = require("./_util")
 
 /**
  */
 const list = _.promise((self, done) => {
     _.promise(self)
         .validate(list)
+
         .make(sd => {
             sd.products = []
             sd.cursor = {}
-            sd.url = `https://${sd.shopify.cfg.api_key}:${sd.shopify.cfg.password}@${sd.shopify.cfg.host}/admin/api/2019-10/products.json`
+            sd.url = `${_util.api(sd)}/products.json`
 
             if (sd.pager) {
-                sd.url = `${sd.url}?page_info=${sd.pager}`
+                sd.url = _util.extend_with_query(sd.url, { [ page_info ]: sd.pager })
             }
-
-            console.log("GET", sd.url)
+            if (sd.query) {
+                sd.url = _util.extend_with_query(sd.url, sd.query)
+            }
         })
         .then(fetch.get)
         .then(fetch.go.json)
@@ -74,10 +77,10 @@ const list = _.promise((self, done) => {
 list.method = "product.list"
 list.requires = {
     shopify: _.is.Dictionary,
-    query: _.is.Dictionary,
 }
 list.accepts = {
     pager: _.is.String,
+    query: _.is.Dictionary,
 }
 list.produces = {
     products: _.is.Array.of.Dictionary,

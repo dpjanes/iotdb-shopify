@@ -29,17 +29,21 @@ const links = require("iotdb-links")
 const URL = require("url").URL
 
 const logger = require("../logger")(__filename)
+const _util = require("./_util")
 
 /**
  */
 const count = _.promise((self, done) => {
     _.promise(self)
         .validate(count)
+
         .make(sd => {
             sd.count = 0
-            sd.url = `https://${sd.shopify.cfg.api_key}:${sd.shopify.cfg.password}@${sd.shopify.cfg.host}/admin/api/2019-10/products/count.json`
+            sd.url = `${_util.api(sd)}/products/count.json`
 
-            console.log("COUNT", sd.url)
+            if (sd.query) {
+                sd.url = _util.extend_with_query(sd.url, sd.query)
+            }
         })
         .then(fetch.get)
         .then(fetch.go.json)
