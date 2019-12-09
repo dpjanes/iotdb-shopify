@@ -23,4 +23,4 @@
 "use strict"
 
 module.exports = require("./lib")
-module.exports.products = require("./products")
+module.exports.product = require("./product")

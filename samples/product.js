@@ -38,26 +38,26 @@ const action = name => {
     return action_name === name
 }
 
-if (action("products.list")) {
+if (action("product.list")) {
     _.promise({
         shopify$cfg: require("./shopify.json"),
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.products.list.p({}))
+        .then(shopify.product.list.p({}))
         .make(sd => {
             console.log("+", JSON.stringify(sd.products, null, 2))
             console.log("+", JSON.stringify(sd.cursor, null, 2))
         })
         .except(_.error.log)
-} else if (action("products.list.all")) {
+} else if (action("product.list.all")) {
     _.promise({
         shopify$cfg: require("./shopify.json"),
         verbose: true,
     })
         .then(shopify.initialize)
         .page({
-            batch: shopify.products.list.all,
+            batch: shopify.product.list.all,
             outputs: "products",
             output_selector: sd => sd.products,
         })

@@ -1,5 +1,5 @@
 /*
- *  products/list.js
+ *  product/list.js
  *
  *  David Janes
  *  IOTDB.org
@@ -71,7 +71,7 @@ const list = _.promise((self, done) => {
         .end(done, self, list)
 })
 
-list.method = "products.list"
+list.method = "product.list"
 list.requires = {
     shopify: _.is.Dictionary,
     query: _.is.Dictionary,
@@ -99,7 +99,7 @@ const all = _.promise((self, done) => {
         .end(done, self, all)
 })
 
-all.method = "products.list.all"
+all.method = "product.list.all"
 all.description = `List everything`
 all.requires = {
 }
