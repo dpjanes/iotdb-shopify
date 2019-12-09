@@ -33,7 +33,7 @@ const logger = require("../logger")(__filename)
 /**
  */
 const api = self => 
-    `https://${self.shopify.cfg.api_key}:${self.shopify.cfg.password}@${self.shopify.cfg.host}/admin/api/2019-10/`
+    `https://${self.shopify.cfg.api_key}:${self.shopify.cfg.password}@${self.shopify.cfg.host}/admin/api/2019-10`
 
 /**
  */

@@ -1,5 +1,5 @@
 /*
- *  product/count.js
+ *  product/get.js
  *
  *  David Janes
  *  IOTDB.org
@@ -33,13 +33,12 @@ const _util = require("./_util")
 
 /**
  */
-const count = _.promise((self, done) => {
+const get = _.promise((self, done) => {
     _.promise(self)
-        .validate(count)
+        .validate(get)
 
         .make(sd => {
-            sd.count = 0
-            sd.url = `${_util.api(sd)}/products/count.json`
+            sd.url = `${_util.api(sd)}/products/${sd.product_id}.json`
 
             if (sd.query) {
                 sd.url = _util.extend_with_query(sd.url, sd.query)
@@ -48,49 +47,29 @@ const count = _.promise((self, done) => {
         .then(fetch.get)
         .then(fetch.go.json)
         .make(sd => {
-            sd.count = sd.json.count
+            console.log("HERE:XXX.1", sd.url)
+            console.log("HERE:XXX.2", sd.json)
+            sd.product = sd.json
         })
 
-        .end(done, self, count)
+        .end(done, self, get)
 })
 
-count.method = "product.count"
-count.description = `Count products`
-count.requires = {
+get.method = "product.get"
+get.description = `Get a Product`
+get.requires = {
     shopify: _.is.Dictionary,
+    product_id: [ _.is.String, _.is.Number ],
 }
-count.accepts = {
-    query: _.is.Dictionary,
+get.produces = {
+    product: _.is.JSON,
 }
-count.produces = {
-    count: _.is.Integer,
+get.params = {
+    product_id: _.p.normal,
 }
-count.params = {
-    query: _.p.normal,
-}
-count.p = _.p(count)
-
-/**
- */
-const all = _.promise((self, done) => {
-    _.promise(self)
-        .validate(all)
-        
-        .then(count.p({}))
-
-        .end(done, self, all)
-})
-
-all.method = "product.count.all"
-all.description = `Count all products`
-all.requires = {
-}
-all.produces = {
-    count: _.is.Integer,
-}
+get.p = _.p(get)
 
 /**
  *  API
  */
-exports.count = count
-exports.count.all = all
+exports.get = get

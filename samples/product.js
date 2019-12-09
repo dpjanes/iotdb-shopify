@@ -76,6 +76,17 @@ if (action("product.list")) {
             console.log("+", sd.count)
         })
         .except(_.error.log)
+} else if (action("product.get")) {
+    _.promise({
+        shopify$cfg: require("./shopify.json"),
+        verbose: true,
+    })
+        .then(shopify.initialize)
+        .then(shopify.product.get.p(4378702610571))
+        .make(sd => {
+            console.log("+", sd.product)
+        })
+        .except(_.error.log)
 } else if (!action_name) {
     console.log("#", "action required - should be one of:", actions.join(", "))
 } else {
