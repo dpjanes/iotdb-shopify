@@ -29,7 +29,7 @@ const links = require("iotdb-links")
 const URL = require("url").URL
 
 const logger = require("../logger")(__filename)
-const _util = require("./_util")
+const _util = require("../lib/_util")
 
 /**
  */
