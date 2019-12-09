@@ -38,7 +38,7 @@ const patch = _.promise((self, done) => {
         .validate(patch)
 
         .make(sd => {
-            sd.url = `${_util.api(sd)}/products/${sd.product_id}.json`
+            sd.url = `${_util.api(sd)}/products/${sd.product.id}.json`
 
             if (sd.query) {
                 sd.url = _util.extend_with_query(sd.url, sd.query)
@@ -62,14 +62,17 @@ patch.method = "product.patch"
 patch.description = `Patch Product`
 patch.requires = {
     shopify: _.is.Dictionary,
-    product_id: [ _.is.String, _.is.Number ],
+    product: {
+        id: _.is.Number,
+    },
+}
+patch.accepts = {
     product: _.is.JSON,
 }
 patch.produces = {
     product: _.is.JSON,
 }
 patch.params = {
-    product_id: _.p.normal,
     product: _.p.normal,
 }
 patch.p = _.p(patch)

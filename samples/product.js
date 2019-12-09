@@ -103,8 +103,8 @@ if (action("product.list")) {
                 sd.product.title = `${match[1]} - ${parseInt(match[2]) + 1}`
             }
 
-            sd.product_id = sd.product.id
             sd.product = {
+                id: sd.product.id,
                 title: sd.product.title,
             }
         })

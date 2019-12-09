@@ -57,7 +57,7 @@ get.method = "product.get"
 get.description = `Get a Product`
 get.requires = {
     shopify: _.is.Dictionary,
-    product_id: [ _.is.String, _.is.Number ],
+    product_id: _.is.Number,
 }
 get.produces = {
     product: _.is.JSON,
