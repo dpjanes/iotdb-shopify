@@ -41,6 +41,7 @@ const action = name => {
 }
 
 const PRODUCT_ID = 4378702610571
+const VARIANT_ID = 31438769553547
 
 if (action("variant.list")) {
     _.promise({
@@ -63,6 +64,17 @@ if (action("variant.list")) {
         .then(shopify.variant.count.product_id.p(ad.id || PRODUCT_ID))
         .make(sd => {
             console.log("+", JSON.stringify(sd.count, null, 2))
+        })
+        .except(_.error.log)
+} else if (action("variant.get")) {
+    _.promise({
+        shopify$cfg: shopifyd,
+        verbose: true,
+    })
+        .then(shopify.initialize)
+        .then(shopify.variant.get.p(ad.id || VARIANT_ID))
+        .make(sd => {
+            console.log("+", JSON.stringify(sd.variant, null, 2))
         })
         .except(_.error.log)
 } else if (!action_name) {
