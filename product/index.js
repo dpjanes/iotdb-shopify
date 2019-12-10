@@ -30,5 +30,6 @@ module.exports = Object.assign(
     require("./get"),
     require("./list"),
     require("./patch"),
+    require("./synthesize"),
     {}
 )

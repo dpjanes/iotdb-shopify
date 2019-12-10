@@ -123,6 +123,13 @@ if (action("variant.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
+        /*
+        .then(shopify.product.synthensize.p((ad.id || PRODUCT_ID))
+        .then(shopify.product.variant.list)
+        .then(shopify.product.variant.create)
+        .then(shopify.product.variant.delete)
+        */
+
         .then(shopify.variant.create.p(ad.id || PRODUCT_ID, {
             option1: "Delete Variant " + _.timestamp.make(),
         }))

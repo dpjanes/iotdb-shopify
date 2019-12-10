@@ -35,7 +35,7 @@ const delete_ = _.promise((self, done) => {
         .validate(delete_)
 
         .make(sd => {
-            sd.url = `${_util.api(sd)}/products/${sd.product_id}.json`
+            sd.url = `${_util.api(sd)}/products/${sd.product.id}.json`
         })
         .then(fetch.delete)
         .then(fetch.go.json)
@@ -50,17 +50,40 @@ delete_.method = "product.delete"
 delete_.description = `Delete a Product`
 delete_.requires = {
     shopify: _.is.Dictionary,
-    product_id: _.is.Number,
+    product: _.is.Dictionary,
 }
 delete_.produces = {
-    product: _.is.JSON,
 }
 delete_.params = {
-    product_id: _.p.normal,
 }
 delete_.p = _.p(delete_)
+
+/**
+ */
+const by_product_id = _.promise((self, done) => {
+    const shopify = require("..")
+
+    _.promise(self)
+        .validate(by_product_id)
+
+        .then(shopify.product.synthesize)
+        .then(shopify.product.delete)
+
+        .end(done, self, by_product_id)
+})
+
+by_product_id.method = "product.delete.by_product_id"
+by_product_id.description = ``
+by_product_id.requires = {
+    product_id: _.is.Number,
+}
+by_product_id.params = {
+    product_id: _.p.normal,
+}
+by_product_id.p = _.p(by_product_id)
 
 /**
  *  API
  */
 exports.delete = delete_
+exports.delete.by_product_id = by_product_id
