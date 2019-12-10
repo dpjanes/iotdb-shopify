@@ -49,7 +49,8 @@ if (action("variant.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.variant.list.product_id.p(ad.id || PRODUCT_ID))
+        .then(shopify.product.synthesize.p(ad.id || PRODUCT_ID))
+        .then(shopify.product.variant.list)
         .make(sd => {
             console.log("+", JSON.stringify(sd.variants, null, 2))
             console.log("+", JSON.stringify(sd.cursor, null, 2))
@@ -61,7 +62,7 @@ if (action("variant.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.variant.count.product_id.p(ad.id || PRODUCT_ID))
+        .then(shopify.product.variant.count.product_id.p(ad.id || PRODUCT_ID))
         .make(sd => {
             console.log("+", JSON.stringify(sd.count, null, 2))
         })
@@ -72,7 +73,7 @@ if (action("variant.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.variant.get.p(ad.id || VARIANT_ID))
+        .then(shopify.product.variant.get.p(ad.id || VARIANT_ID))
         .make(sd => {
             console.log("+", JSON.stringify(sd.variant, null, 2))
         })
@@ -83,7 +84,7 @@ if (action("variant.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.variant.get.p(ad.id || VARIANT_ID))
+        .then(shopify.product.variant.get.p(ad.id || VARIANT_ID))
         .make(sd => {
             console.log("+", "old", sd.variant.option1)
 
@@ -99,7 +100,7 @@ if (action("variant.list")) {
                 option1: sd.variant.option1,
             }
         })
-        .then(shopify.variant.patch)
+        .then(shopify.product.variant.patch)
         .make(sd => {
             console.log("+", "new", sd.variant.title)
         })
@@ -110,7 +111,7 @@ if (action("variant.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.variant.create.p(ad.id || PRODUCT_ID, {
+        .then(shopify.product.variant.create.p(ad.id || PRODUCT_ID, {
             option1: "New Variant " + _.timestamp.make(),
         }))
         .make(sd => {
@@ -130,7 +131,7 @@ if (action("variant.list")) {
         .then(shopify.product.variant.delete)
         */
 
-        .then(shopify.variant.create.p(ad.id || PRODUCT_ID, {
+        .then(shopify.product.variant.create.p(ad.id || PRODUCT_ID, {
             option1: "Delete Variant " + _.timestamp.make(),
         }))
         .make(sd => {
@@ -138,9 +139,9 @@ if (action("variant.list")) {
             sd.variant_id = sd.variant.id
         })
         .log("deleting")
-        .then(shopify.variant.delete)
+        .then(shopify.product.variant.delete)
         .log("get")
-        .then(shopify.variant.get)
+        .then(shopify.product.variant.get)
         .make(sd => {
             console.log("+", "after-delete", sd.variant)
         })

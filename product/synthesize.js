@@ -34,7 +34,7 @@ const synthesize = _.promise(self => {
     _.promise.validate(self,synthesize)
 
     self.product = {
-        id: sd.product_id,
+        id: self.product_id,
     }
 })
 
