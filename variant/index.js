@@ -1,5 +1,5 @@
 /*
- *  product/index.js
+ *  products/index.js
  *
  *  David Janes
  *  IOTDB.org
@@ -24,11 +24,11 @@
 
 module.exports = Object.assign(
     {},
-    require("./count"),
-    require("./create"),
-    require("./delete"),
-    require("./get"),
+    // require("./count"),
+    // require("./create"),
+    // require("./delete"),
+    // require("./get"),
     require("./list"),
-    require("./patch"),
+    // require("./patch"),
     {}
 )

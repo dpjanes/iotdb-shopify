@@ -25,3 +25,4 @@
 module.exports = require("./lib")
 module.exports.product = require("./product")
 module.exports.location = require("./location")
+module.exports.variant = require("./variant")
