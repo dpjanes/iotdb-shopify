@@ -78,7 +78,7 @@ if (action("location.list")) {
         })
         .except(_.error.log)
 } else if (!action_name) {
-    console.log("#", "action required")
+    console.log("#", "action required - should be one of:", actions.join(", "))
 } else {
     console.log("#", "unknown action - should be one of:", actions.join(", "))
 }
