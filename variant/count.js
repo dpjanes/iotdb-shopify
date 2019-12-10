@@ -38,13 +38,13 @@ const count_product_id = _.promise((self, done) => {
         .validate(count_product_id)
 
         .make(sd => {
-            sd.count = 0
             sd.url = `${_util.api(sd)}/products/${sd.product_id}/variants/count.json`
         })
         .then(fetch.get)
         .then(fetch.go.json)
+        .except(_.error.otherwise(404, sd => sd.json = null))
         .make(sd => {
-            sd.count = sd.json.count
+            sd.count = sd.json ? sd.json.count : 0
         })
 
         .end(done, self, count_product_id)

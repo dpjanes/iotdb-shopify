@@ -48,7 +48,7 @@ if (action("variant.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.variant.list.product_id.p(PRODUCT_ID))
+        .then(shopify.variant.list.product_id.p(ad.id || PRODUCT_ID))
         .make(sd => {
             console.log("+", JSON.stringify(sd.variants, null, 2))
             console.log("+", JSON.stringify(sd.cursor, null, 2))
@@ -60,7 +60,7 @@ if (action("variant.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.variant.count.product_id.p(PRODUCT_ID))
+        .then(shopify.variant.count.product_id.p(ad.id || PRODUCT_ID))
         .make(sd => {
             console.log("+", JSON.stringify(sd.count, null, 2))
         })

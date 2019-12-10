@@ -39,14 +39,7 @@ const get = _.promise((self, done) => {
         })
         .then(fetch.get)
         .then(fetch.go.json)
-        .except(error => {
-            if (_.error.status(error) === 404) {
-                error.self.json = null
-                return error.self
-            } else {
-                throw error
-            }
-        })
+        .except(_.error.otherwise(404, sd => sd.json = null))
         .make(sd => {
             sd.product = sd.json && sd.json.product || null
         })
