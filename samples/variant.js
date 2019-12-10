@@ -93,9 +93,12 @@ if (action("variant.list")) {
                 sd.variant.title = `${match[1]} - ${parseInt(match[2]) + 1}`
             }
 
+            // INVESTING - cannot change the variant name
+
             sd.variant = {
                 id: sd.variant.id,
                 title: sd.variant.title,
+                price: "1.01",
             }
         })
         .then(shopify.variant.patch)

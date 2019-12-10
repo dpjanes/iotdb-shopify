@@ -40,14 +40,11 @@ const patch = _.promise((self, done) => {
             sd.json = {
                 variant: sd.variant,
             }
-
-            console.log("HERE", sd.url, sd.json)
         })
         .then(fetch.put)
         .then(fetch.body.json)
         .then(fetch.go.json)
         .make(sd => {
-            console.log("HERE:XXX", sd.json)
             sd.variant = sd.json && sd.json.variant || null
         })
 
