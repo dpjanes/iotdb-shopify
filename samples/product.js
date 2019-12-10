@@ -28,6 +28,8 @@ const shopify = require("..")
 
 const minimist = require("minimist")
 
+const shopifyd = require("./cfg/shopify.json")
+
 const ad = minimist(process.argv.slice(2));
 const action_name = ad._[0]
 
@@ -40,7 +42,7 @@ const action = name => {
 
 if (action("product.list")) {
     _.promise({
-        shopify$cfg: require("./shopify.json"),
+        shopify$cfg: shopifyd,
         verbose: true,
     })
         .then(shopify.initialize)
@@ -52,7 +54,7 @@ if (action("product.list")) {
         .except(_.error.log)
 } else if (action("product.list.all")) {
     _.promise({
-        shopify$cfg: require("./shopify.json"),
+        shopify$cfg: shopifyd,
         verbose: true,
     })
         .then(shopify.initialize)
@@ -67,7 +69,7 @@ if (action("product.list")) {
         .except(_.error.log)
 } else if (action("product.count")) {
     _.promise({
-        shopify$cfg: require("./shopify.json"),
+        shopify$cfg: shopifyd,
         verbose: true,
     })
         .then(shopify.initialize)
@@ -78,7 +80,7 @@ if (action("product.list")) {
         .except(_.error.log)
 } else if (action("product.get")) {
     _.promise({
-        shopify$cfg: require("./shopify.json"),
+        shopify$cfg: shopifyd,
         verbose: true,
     })
         .then(shopify.initialize)
@@ -89,7 +91,7 @@ if (action("product.list")) {
         .except(_.error.log)
 } else if (action("product.patch")) {
     _.promise({
-        shopify$cfg: require("./shopify.json"),
+        shopify$cfg: shopifyd,
         verbose: true,
     })
         .then(shopify.initialize)
@@ -115,7 +117,7 @@ if (action("product.list")) {
         .except(_.error.log)
 } else if (action("product.create")) {
     _.promise({
-        shopify$cfg: require("./shopify.json"),
+        shopify$cfg: shopifyd,
         verbose: true,
     })
         .then(shopify.initialize)
@@ -126,8 +128,29 @@ if (action("product.list")) {
             console.log("+", sd.product)
         })
         .except(_.error.log)
+} else if (action("product.delete")) {
+    _.promise({
+        shopify$cfg: shopifyd,
+        verbose: true,
+    })
+        .then(shopify.initialize)
+        .then(shopify.product.create.p({
+            title: "Delete Product " + _.timestamp.make(),
+        }))
+        .make(sd => {
+            console.log("+", "created", sd.product)
+            sd.product_id = sd.product.id
+        })
+        .log("deleting")
+        .then(shopify.product.delete)
+        .log("get")
+        .then(shopify.product.get)
+        .make(sd => {
+            console.log("+", "after-delete", sd.product)
+        })
+        .except(_.error.log)
 } else if (!action_name) {
-    console.log("#", "action required - should be one of:", actions.join(", "))
+    console.log("#", "action required")
 } else {
     console.log("#", "unknown action - should be one of:", actions.join(", "))
 }

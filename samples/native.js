@@ -32,7 +32,7 @@ const minimist = require("minimist")
 const ad = minimist(process.argv.slice(2));
 const action_name = ad._[0]
 
-const shopifyd = require("./shopify.json")
+const shopifyd = require("./cfg/shopify.json")
 
 const actions = []
 const action = name => {
@@ -40,7 +40,6 @@ const action = name => {
 
     return action_name === name
 }
-
 
 if (action("products.list")) {
     _.promise({

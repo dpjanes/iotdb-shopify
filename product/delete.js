@@ -1,9 +1,9 @@
 /*
- *  location/get.js
+ *  product/delete.js
  *
  *  David Janes
  *  IOTDB.org
- *  2019-12-09
+ *  2019-12-10
  *
  *  Copyright (2013-2020) David P. Janes
  *
@@ -30,45 +30,37 @@ const _util = require("../lib/_util")
 
 /**
  */
-const get = _.promise((self, done) => {
+const delete_ = _.promise((self, done) => {
     _.promise(self)
-        .validate(get)
+        .validate(delete_)
 
         .make(sd => {
-            sd.url = `${_util.api(sd)}/locations/${sd.location_id}.json`
+            sd.url = `${_util.api(sd)}/products/${sd.product_id}.json`
         })
-        .then(fetch.get)
+        .then(fetch.delete)
         .then(fetch.go.json)
-        .except(error => {
-            if (_.error.status(error) === 404) {
-                error.self.json = null
-                return error.self
-            } else {
-                throw error
-            }
-        })
         .make(sd => {
-            sd.location = sd.json && sd.json.location || null
+            sd.product = sd.json && sd.json.product || null
         })
 
-        .end(done, self, get)
+        .end(done, self, delete_)
 })
 
-get.method = "location.get"
-get.description = `Get a Location`
-get.requires = {
+delete_.method = "product.delete"
+delete_.description = `Delete a Product`
+delete_.requires = {
     shopify: _.is.Dictionary,
-    location_id: _.is.Number,
+    product_id: _.is.Number,
 }
-get.produces = {
-    location: _.is.JSON,
+delete_.produces = {
+    product: _.is.JSON,
 }
-get.params = {
-    location_id: _.p.normal,
+delete_.params = {
+    product_id: _.p.normal,
 }
-get.p = _.p(get)
+delete_.p = _.p(delete_)
 
 /**
  *  API
  */
-exports.get = get
+exports.delete = delete_
