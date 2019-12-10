@@ -1,5 +1,5 @@
 /*
- *  product/variant/get.js
+ *  product/variant/patch.js
  *
  *  David Janes
  *  IOTDB.org
@@ -25,43 +25,52 @@
 const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
 
-const logger = require("../../logger")(__filename)
-const _util = require("../../lib/_util")
+const logger = require("../logger")(__filename)
+const _util = require("../lib/_util")
 
 /**
  */
-const get = _.promise((self, done) => {
+const patch = _.promise((self, done) => {
     _.promise(self)
-        .validate(get)
+        .validate(patch)
 
         .make(sd => {
-            sd.url = `${_util.api(sd)}/variants/${sd.variant_id}.json`
+            sd.url = `${_util.api(sd)}/variants/${sd.variant.id}.json`
+
+            sd.json = {
+                variant: sd.variant,
+            }
         })
-        .then(fetch.get)
+        .then(fetch.put)
+        .then(fetch.body.json)
         .then(fetch.go.json)
-        .except(_.error.otherwise(404, { json: null }))
         .make(sd => {
             sd.variant = sd.json && sd.json.variant || null
         })
 
-        .end(done, self, get)
+        .end(done, self, patch)
 })
 
-get.method = "product.variant.get"
-get.description = `Get a Variant`
-get.requires = {
+patch.method = "product.variant.patch"
+patch.description = `Patch Variant`
+patch.requires = {
     shopify: _.is.Dictionary,
-    variant_id: _.is.Number,
+    variant: {
+        id: _.is.Number,
+    },
 }
-get.produces = {
+patch.accepts = {
     variant: _.is.JSON,
 }
-get.params = {
-    variant_id: _.p.normal,
+patch.produces = {
+    variant: _.is.JSON,
 }
-get.p = _.p(get)
+patch.params = {
+    variant: _.p.normal,
+}
+patch.p = _.p(patch)
 
 /**
  *  API
  */
-exports.get = get
+exports.patch = patch

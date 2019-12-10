@@ -1,9 +1,9 @@
 /*
- *  product/variant/create.js
+ *  product/variant/get.js
  *
  *  David Janes
  *  IOTDB.org
- *  2019-12-09
+ *  2019-12-10
  *
  *  Copyright (2013-2020) David P. Janes
  *
@@ -25,54 +25,43 @@
 const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
 
-const logger = require("../../logger")(__filename)
-const _util = require("../../lib/_util")
+const logger = require("../logger")(__filename)
+const _util = require("../lib/_util")
 
 /**
  */
-const create = _.promise((self, done) => {
+const get = _.promise((self, done) => {
     _.promise(self)
-        .validate(create)
+        .validate(get)
 
         .make(sd => {
-            sd.url = `${_util.api(sd)}/products/${sd.product.id}/variants.json`
-
-            sd.json = {
-                variant: sd.variant,
-            }
+            sd.url = `${_util.api(sd)}/variants/${sd.variant_id}.json`
         })
-        .then(fetch.post)
-        .then(fetch.body.json)
+        .then(fetch.get)
         .then(fetch.go.json)
+        .except(_.error.otherwise(404, { json: null }))
         .make(sd => {
             sd.variant = sd.json && sd.json.variant || null
         })
 
-        .end(done, self, create)
+        .end(done, self, get)
 })
 
-create.method = "product.variant.create"
-create.description = `Create a new Variant`
-create.requires = {
+get.method = "product.variant.get"
+get.description = `Get a Variant`
+get.requires = {
     shopify: _.is.Dictionary,
-    product: _.is.Dictionary,
-    variant: {
-        option1: _.is.String,
-    },
+    variant_id: _.is.Number,
 }
-create.accepts = {
+get.produces = {
     variant: _.is.JSON,
 }
-create.produces = {
-    variant: _.is.JSON,
+get.params = {
+    variant_id: _.p.normal,
 }
-create.params = {
-    product: _.p.normal,
-    variant: _.p.normal,
-}
-create.p = _.p(create)
+get.p = _.p(get)
 
 /**
  *  API
  */
-exports.create = create
+exports.get = get

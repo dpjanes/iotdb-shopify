@@ -1,9 +1,9 @@
 /*
- *  product/variant/count.js
+ *  product/variant/create.js
  *
  *  David Janes
  *  IOTDB.org
- *  2019-12-04
+ *  2019-12-09
  *
  *  Copyright (2013-2020) David P. Janes
  *
@@ -25,45 +25,54 @@
 const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
 
-const logger = require("../../logger")(__filename)
-const _util = require("../../lib/_util")
+const logger = require("../logger")(__filename)
+const _util = require("../lib/_util")
 
 /**
  */
-const count = _.promise((self, done) => {
+const create = _.promise((self, done) => {
     _.promise(self)
-        .validate(count)
+        .validate(create)
 
         .make(sd => {
-            sd.url = `${_util.api(sd)}/products/${sd.product.id}/variants/count.json`
+            sd.url = `${_util.api(sd)}/products/${sd.product.id}/variants.json`
+
+            sd.json = {
+                variant: sd.variant,
+            }
         })
-        .then(fetch.get)
+        .then(fetch.post)
+        .then(fetch.body.json)
         .then(fetch.go.json)
-        .except(_.error.otherwise(404, { json: null }))
         .make(sd => {
-            sd.count = sd.json ? sd.json.count : 0
+            sd.variant = sd.json && sd.json.variant || null
         })
 
-        .end(done, self, count)
+        .end(done, self, create)
 })
 
-count.method = "product.variant.count"
-count.description = `Count the Variants of a Product`
-count.requires = {
+create.method = "product.variant.create"
+create.description = `Create a new Variant`
+create.requires = {
     shopify: _.is.Dictionary,
     product: _.is.Dictionary,
+    variant: {
+        option1: _.is.String,
+    },
 }
-count.accepts = {
+create.accepts = {
+    variant: _.is.JSON,
 }
-count.produces = {
-    count: _.is.Integer,
+create.produces = {
+    variant: _.is.JSON,
 }
-count.params = {
+create.params = {
     product: _.p.normal,
+    variant: _.p.normal,
 }
-count.p = _.p(count)
+create.p = _.p(create)
 
 /**
  *  API
  */
-exports.count = count
+exports.create = create

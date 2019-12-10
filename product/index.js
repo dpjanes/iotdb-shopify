@@ -34,5 +34,3 @@ module.exports = Object.assign(
     {}
 )
 
-module.exports.variant = require("./variant")
-module.exports.inventory_item = require("./inventory_item")

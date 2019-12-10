@@ -1,9 +1,9 @@
 /*
- *  product/variant/patch.js
+ *  product/variant/count.js
  *
  *  David Janes
  *  IOTDB.org
- *  2019-12-10
+ *  2019-12-04
  *
  *  Copyright (2013-2020) David P. Janes
  *
@@ -25,52 +25,45 @@
 const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
 
-const logger = require("../../logger")(__filename)
-const _util = require("../../lib/_util")
+const logger = require("../logger")(__filename)
+const _util = require("../lib/_util")
 
 /**
  */
-const patch = _.promise((self, done) => {
+const count = _.promise((self, done) => {
     _.promise(self)
-        .validate(patch)
+        .validate(count)
 
         .make(sd => {
-            sd.url = `${_util.api(sd)}/variants/${sd.variant.id}.json`
-
-            sd.json = {
-                variant: sd.variant,
-            }
+            sd.url = `${_util.api(sd)}/products/${sd.product.id}/variants/count.json`
         })
-        .then(fetch.put)
-        .then(fetch.body.json)
+        .then(fetch.get)
         .then(fetch.go.json)
+        .except(_.error.otherwise(404, { json: null }))
         .make(sd => {
-            sd.variant = sd.json && sd.json.variant || null
+            sd.count = sd.json ? sd.json.count : 0
         })
 
-        .end(done, self, patch)
+        .end(done, self, count)
 })
 
-patch.method = "product.variant.patch"
-patch.description = `Patch Variant`
-patch.requires = {
+count.method = "product.variant.count"
+count.description = `Count the Variants of a Product`
+count.requires = {
     shopify: _.is.Dictionary,
-    variant: {
-        id: _.is.Number,
-    },
+    product: _.is.Dictionary,
 }
-patch.accepts = {
-    variant: _.is.JSON,
+count.accepts = {
 }
-patch.produces = {
-    variant: _.is.JSON,
+count.produces = {
+    count: _.is.Integer,
 }
-patch.params = {
-    variant: _.p.normal,
+count.params = {
+    product: _.p.normal,
 }
-patch.p = _.p(patch)
+count.p = _.p(count)
 
 /**
  *  API
  */
-exports.patch = patch
+exports.count = count
