@@ -1,5 +1,5 @@
 /*
- *  product/inventory_item/associate.js
+ *  product/inventory_item/get.js
  *
  *  David Janes
  *  IOTDB.org
@@ -30,9 +30,9 @@ const _util = require("../../lib/_util")
 
 /**
  */
-const associate = _.promise((self, done) => {
+const by_variant = _.promise((self, done) => {
     _.promise(self)
-        .validate(associate)
+        .validate(by_variant)
 
         .make(sd => {
             sd.url = `${_util.api(sd)}/inventory_items/${sd.variant.inventory_item_id}.json`
@@ -47,24 +47,26 @@ const associate = _.promise((self, done) => {
             sd.inventory_item = sd.json && sd.json.inventory_item || null
         })
 
-        .end(done, self, associate)
+        .end(done, self, by_variant)
 })
 
-associate.method = "product.inventory_item.associate"
-associate.description = `Get the Inventory Item associated with a Variant`
-associate.requires = {
+by_variant.method = "product.inventory_item.by_variant"
+by_variant.description = `Get the Inventory Item associated with a Variant`
+by_variant.requires = {
     shopify: _.is.Dictionary,
     variant: _.is.Dictionary,
 }
-associate.produces = {
+by_variant.produces = {
     inventory_item: _.is.JSON,
 }
-associate.params = {
+by_variant.params = {
     variant: _.is.Dictionary,
 }
-associate.p = _.p(associate)
+by_variant.p = _.p(by_variant)
 
 /**
  *  API
  */
-exports.associate = associate
+exports.get = {
+    by_variant: by_variant,
+}

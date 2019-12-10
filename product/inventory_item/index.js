@@ -24,11 +24,10 @@
 
 module.exports = Object.assign(
     {},
-    require("./associate"),
     // require("./count"),
     // require("./create"),
     // require("./delete"),
-    // require("./get"),
+    require("./get"),
     // require("./list"),
     // require("./patch"),
     {}

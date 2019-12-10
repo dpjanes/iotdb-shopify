@@ -47,7 +47,7 @@ const get = _.promise((self, done) => {
         .end(done, self, get)
 })
 
-get.method = "product.get"
+get.method = "product.by.id"
 get.description = `Get a Product`
 get.requires = {
     shopify: _.is.Dictionary,
@@ -65,3 +65,6 @@ get.p = _.p(get)
  *  API
  */
 exports.get = get
+exports.by = {
+    id: get,
+}
