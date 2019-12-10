@@ -42,17 +42,40 @@ const action = name => {
 
 const PRODUCT_ID = 4378702610571
 const VARIANT_ID = 31438769553547
+const INVENTORY_ITEM_ID = 32985999638667
 
-if (action("associate")) {
+if (action("by.variant")) {
     _.promise({
         shopify$cfg: shopifyd,
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.product.variant.get.p(ad.id || VARIANT_ID)) 
+        .then(shopify.variant.get.p(ad.id || VARIANT_ID)) 
         .then(shopify.inventory_item.by.variant)
         .make(sd => {
             console.log("+", "variant", JSON.stringify(sd.variant, null, 2))
+            console.log("+", "inventory_item", JSON.stringify(sd.inventory_item, null, 2))
+        })
+        .except(_.error.log)
+} else if (action("by.id")) {
+    _.promise({
+        shopify$cfg: shopifyd,
+        verbose: true,
+    })
+        .then(shopify.initialize)
+        .then(shopify.inventory_item.by.id.p(ad.id || INVENTORY_ITEM_ID)))
+        .make(sd => {
+            console.log("+", "inventory_item", JSON.stringify(sd.inventory_item, null, 2))
+        })
+        .except(_.error.log)
+} else if (action("get")) {
+    _.promise({
+        shopify$cfg: shopifyd,
+        verbose: true,
+    })
+        .then(shopify.initialize)
+        .then(shopify.inventory_item.get(ad.id || INVENTORY_ITEM_ID)))
+        .make(sd => {
             console.log("+", "inventory_item", JSON.stringify(sd.inventory_item, null, 2))
         })
         .except(_.error.log)

@@ -1,5 +1,5 @@
 /*
- *  product/inventory_item/get.js
+ *  inventory_item/get.js
  *
  *  David Janes
  *  IOTDB.org
@@ -25,8 +25,8 @@
 const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
 
-const logger = require("../../logger")(__filename)
-const _util = require("../../lib/_util")
+const logger = require("../logger")(__filename)
+const _util = require("../lib/_util")
 
 /**
  */
@@ -50,7 +50,7 @@ const by_variant = _.promise((self, done) => {
         .end(done, self, by_variant)
 })
 
-by_variant.method = "product.inventory_item.by_variant"
+by_variant.method = "inventory_item.by_variant"
 by_variant.description = `Get the Inventory Item associated with a Variant`
 by_variant.requires = {
     shopify: _.is.Dictionary,
@@ -67,6 +67,6 @@ by_variant.p = _.p(by_variant)
 /**
  *  API
  */
-exports.get = {
-    by_variant: by_variant,
+exports.by = {
+    variant: by_variant,
 }
