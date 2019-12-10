@@ -49,7 +49,7 @@ if (action("variant.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.product.synthesize.p(ad.id || PRODUCT_ID))
+        .then(shopify.product.synthesize.p(ad.id || PRODUCT_ID)) // you could also get
         .then(shopify.product.variant.list)
         .make(sd => {
             console.log("+", JSON.stringify(sd.variants, null, 2))
@@ -62,7 +62,8 @@ if (action("variant.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.product.variant.count.product_id.p(ad.id || PRODUCT_ID))
+        .then(shopify.product.synthesize.p(ad.id || PRODUCT_ID)) // you could also get
+        .then(shopify.product.variant.count)
         .make(sd => {
             console.log("+", JSON.stringify(sd.count, null, 2))
         })
@@ -111,7 +112,8 @@ if (action("variant.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.product.variant.create.p(ad.id || PRODUCT_ID, {
+        .then(shopify.product.synthesize.p(ad.id || PRODUCT_ID)) // you could also get
+        .then(shopify.product.variant.create.p(null, {
             option1: "New Variant " + _.timestamp.make(),
         }))
         .make(sd => {
@@ -124,30 +126,27 @@ if (action("variant.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        /*
-        .then(shopify.product.synthensize.p((ad.id || PRODUCT_ID))
-        .then(shopify.product.variant.list)
-        .then(shopify.product.variant.create)
-        .then(shopify.product.variant.delete)
-        */
+        .then(shopify.product.synthesize.p(ad.id || PRODUCT_ID))
 
-        .then(shopify.product.variant.create.p(ad.id || PRODUCT_ID, {
+        .then(shopify.product.variant.create.p(null, {
             option1: "Delete Variant " + _.timestamp.make(),
         }))
         .make(sd => {
             console.log("+", "created", sd.variant)
-            sd.variant_id = sd.variant.id
+            sd.aside = sd.variant.id
         })
         .log("deleting")
         .then(shopify.product.variant.delete)
         .log("get")
+        .add("aside:variant_id")
         .then(shopify.product.variant.get)
+
         .make(sd => {
             console.log("+", "after-delete", sd.variant)
         })
         .except(_.error.log)
 } else if (!action_name) {
-    console.log("#", "action required")
+    console.log("#", "action required - should be one of:", actions.join(", "))
 } else {
     console.log("#", "unknown action - should be one of:", actions.join(", "))
 }

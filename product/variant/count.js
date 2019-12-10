@@ -30,9 +30,9 @@ const _util = require("../../lib/_util")
 
 /**
  */
-const count_product_id = _.promise((self, done) => {
+const count = _.promise((self, done) => {
     _.promise(self)
-        .validate(count_product_id)
+        .validate(count)
 
         .make(sd => {
             sd.url = `${_util.api(sd)}/products/${sd.product.id}/variants/count.json`
@@ -44,28 +44,26 @@ const count_product_id = _.promise((self, done) => {
             sd.count = sd.json ? sd.json.count : 0
         })
 
-        .end(done, self, count_product_id)
+        .end(done, self, count)
 })
 
-count_product_id.method = "product.variant.list.product_id"
-count_product_id.description = `Count the Variants of a Product`
-count_product_id.requires = {
+count.method = "product.variant.count"
+count.description = `Count the Variants of a Product`
+count.requires = {
     shopify: _.is.Dictionary,
     product: _.is.Dictionary,
 }
-count_product_id.accepts = {
+count.accepts = {
 }
-count_product_id.produces = {
+count.produces = {
     count: _.is.Integer,
 }
-count_product_id.params = {
+count.params = {
     product: _.p.normal,
 }
-count_product_id.p = _.p(count_product_id)
+count.p = _.p(count)
 
 /**
  *  API
  */
-exports.count = {
-    product_id: count_product_id,
-}
+exports.count = count
