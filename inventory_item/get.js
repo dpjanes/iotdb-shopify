@@ -30,6 +30,42 @@ const _util = require("../lib/_util")
 
 /**
  */
+const get = _.promise((self, done) => {
+    _.promise(self)
+        .validate(get)
+
+        .make(sd => {
+            sd.url = `${_util.api(sd)}/inventory_items/${sd.inventory_item_id}.json`
+            // sd.url = _util.extend_with_query(sd.url, { ids: sd.variant.id })
+
+            console.log("URL", sd.url)
+        })
+        .then(fetch.get)
+        .then(fetch.go.json)
+        .except(_.error.otherwise(404, { json: null }))
+        .make(sd => {
+            sd.inventory_item = sd.json && sd.json.inventory_item || null
+        })
+
+        .end(done, self, get)
+})
+
+get.method = "inventory_item.get"
+get.description = `Get the Inventory Item by blain@pqbtourism.com`
+get.requires = {
+    shopify: _.is.Dictionary,
+    inventory_item_id: _.is.Integer,
+}
+get.produces = {
+    inventory_item: _.is.JSON,
+}
+get.params = {
+    inventory_item_id: _.p.normal,
+}
+get.p = _.p(get)
+
+/**
+ */
 const by_variant = _.promise((self, done) => {
     _.promise(self)
         .validate(by_variant)
@@ -50,7 +86,7 @@ const by_variant = _.promise((self, done) => {
         .end(done, self, by_variant)
 })
 
-by_variant.method = "inventory_item.by_variant"
+by_variant.method = "inventory_item.by.variant"
 by_variant.description = `Get the Inventory Item associated with a Variant`
 by_variant.requires = {
     shopify: _.is.Dictionary,
@@ -60,13 +96,15 @@ by_variant.produces = {
     inventory_item: _.is.JSON,
 }
 by_variant.params = {
-    variant: _.is.Dictionary,
+    variant: _.p.normal,
 }
 by_variant.p = _.p(by_variant)
 
 /**
  *  API
  */
+exports.get = get
 exports.by = {
+    id: get,
     variant: by_variant,
 }

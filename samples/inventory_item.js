@@ -63,7 +63,7 @@ if (action("by.variant")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.inventory_item.by.id.p(ad.id || INVENTORY_ITEM_ID)))
+        .then(shopify.inventory_item.by.id.p(ad.id || INVENTORY_ITEM_ID))
         .make(sd => {
             console.log("+", "inventory_item", JSON.stringify(sd.inventory_item, null, 2))
         })
@@ -74,7 +74,7 @@ if (action("by.variant")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.inventory_item.get(ad.id || INVENTORY_ITEM_ID)))
+        .then(shopify.inventory_item.get(ad.id || INVENTORY_ITEM_ID))
         .make(sd => {
             console.log("+", "inventory_item", JSON.stringify(sd.inventory_item, null, 2))
         })
