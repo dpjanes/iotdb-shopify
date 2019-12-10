@@ -85,20 +85,18 @@ if (action("variant.list")) {
         .then(shopify.initialize)
         .then(shopify.variant.get.p(ad.id || VARIANT_ID))
         .make(sd => {
-            console.log("+", "old", sd.variant.title)
-            const match = sd.variant.title.match(/^(.*) - (\d+)$/)
-            if (!match) {
-                sd.variant.title = `${sd.variant.title} - 1`
-            } else {
-                sd.variant.title = `${match[1]} - ${parseInt(match[2]) + 1}`
-            }
+            console.log("+", "old", sd.variant.option1)
 
-            // INVESTING - cannot change the variant name
+            const match = sd.variant.option1.match(/^(.*) - (\d+)$/)
+            if (!match) {
+                sd.variant.option1 = `${sd.variant.option1} - 1`
+            } else {
+                sd.variant.option1 = `${match[1]} - ${parseInt(match[2]) + 1}`
+            }
 
             sd.variant = {
                 id: sd.variant.id,
-                title: sd.variant.title,
-                price: "1.01",
+                option1: sd.variant.option1,
             }
         })
         .then(shopify.variant.patch)
