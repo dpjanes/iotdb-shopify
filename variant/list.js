@@ -48,6 +48,7 @@ const list_product_id = _.promise((self, done) => {
         })
         .then(fetch.get)
         .then(fetch.go.json)
+        .except(_.error.otherwise(404, sd => sd.json = { variants: [] }))
         .make(sd => {
             sd.variants = sd.json.variants
 
@@ -72,6 +73,7 @@ const list_product_id = _.promise((self, done) => {
 })
 
 list_product_id.method = "variant.list.product_id"
+list_product_id.description = `List the variants of a Product (by product_id)`
 list_product_id.requires = {
     shopify: _.is.Dictionary,
     product_id: _.is.Integer,

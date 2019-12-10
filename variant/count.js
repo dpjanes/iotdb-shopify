@@ -24,9 +24,6 @@
 
 const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
-const links = require("iotdb-links")
-
-const URL = require("url").URL
 
 const logger = require("../logger")(__filename)
 const _util = require("../lib/_util")
@@ -51,6 +48,7 @@ const count_product_id = _.promise((self, done) => {
 })
 
 count_product_id.method = "variant.list.product_id"
+count_product_id.description = `Count the variants of a Product (by product_id)`
 count_product_id.requires = {
     shopify: _.is.Dictionary,
     product_id: _.is.Integer,
