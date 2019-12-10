@@ -104,8 +104,43 @@ if (action("variant.list")) {
             console.log("+", "new", sd.variant.title)
         })
         .except(_.error.log)
+} else if (action("variant.create")) {
+    _.promise({
+        shopify$cfg: shopifyd,
+        verbose: true,
+    })
+        .then(shopify.initialize)
+        .then(shopify.variant.create.p(ad.id || PRODUCT_ID, {
+            option1: "New Variant " + _.timestamp.make(),
+        }))
+        .make(sd => {
+            console.log("+", sd.variant)
+        })
+        .except(_.error.log)
+} else if (action("variant.delete")) {
+    _.promise({
+        shopify$cfg: shopifyd,
+        verbose: true,
+    })
+        .then(shopify.initialize)
+        .then(shopify.variant.create.p(ad.id || PRODUCT_ID, {
+            option1: "Delete Variant " + _.timestamp.make(),
+        }))
+        .make(sd => {
+            console.log("+", "created", sd.variant)
+            sd.variant_id = sd.variant.id
+        })
+        .log("deleting")
+        .then(shopify.variant.delete)
+        .log("get")
+        .then(shopify.variant.get)
+        .make(sd => {
+            console.log("+", "after-delete", sd.variant)
+        })
+        .except(_.error.log)
 } else if (!action_name) {
     console.log("#", "action required")
 } else {
     console.log("#", "unknown action - should be one of:", actions.join(", "))
 }
+

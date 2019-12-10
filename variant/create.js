@@ -67,6 +67,7 @@ create.produces = {
     variant: _.is.JSON,
 }
 create.params = {
+    product_id: _.is.Integer,
     variant: _.p.normal,
 }
 create.p = _.p(create)

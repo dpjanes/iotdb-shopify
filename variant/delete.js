@@ -39,7 +39,7 @@ const delete_ = _.promise((self, done) => {
         .then(shopify.variant.get)
         .conditional(sd => !sd.variant, _.promise.bail)
         .make(sd => {
-            sd.url = `${_util.api(sd)}/products/${sd.product.product_id}/variants/${sd.variant_id}.json`
+            sd.url = `${_util.api(sd)}/products/${sd.variant.product_id}/variants/${sd.variant_id}.json`
         })
         .then(fetch.delete)
         .then(fetch.go.json)
