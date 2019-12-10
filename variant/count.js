@@ -34,6 +34,7 @@ const count = _.promise((self, done) => {
     _.promise(self)
         .validate(count)
 
+        .conditional(sd => _.is.Atomic(sd.product), shopify.product.get.p(self.product))
         .make(sd => {
             sd.url = `${_util.api(sd)}/products/${sd.product.id}/variants/count.json`
         })
@@ -51,7 +52,7 @@ count.method = "product.variant.count"
 count.description = `Count the Variants of a Product`
 count.requires = {
     shopify: _.is.Dictionary,
-    product: _.is.Dictionary,
+    product: [ _.is.Integer, _.is.String, _.is.Dictionary, ],
 }
 count.accepts = {
 }

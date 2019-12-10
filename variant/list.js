@@ -31,9 +31,12 @@ const _util = require("../lib/_util")
 /**
  */
 const list = _.promise((self, done) => {
+    const shopify = require("..")
+
     _.promise(self)
         .validate(list)
 
+        .conditional(sd => _.is.Atomic(sd.product), shopify.product.get.p(self.product))
         .make(sd => {
             sd.url = `${_util.api(sd)}/products/${sd.product.id}/variants.json`
 
@@ -54,7 +57,7 @@ list.method = "product.variant.list"
 list.description = `List the Variants of a Product`
 list.requires = {
     shopify: _.is.Dictionary,
-    product: _.is.Dictionary,
+    product: [ _.is.Integer, _.is.String, _.is.Dictionary, ],
 }
 list.accepts = {
     pager: _.is.String,

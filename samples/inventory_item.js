@@ -57,6 +57,17 @@ if (action("by.variant")) {
             console.log("+", "inventory_item", JSON.stringify(sd.inventory_item, null, 2))
         })
         .except(_.error.log)
+} else if (action("by.variant-2")) {
+    _.promise({
+        shopify$cfg: shopifyd,
+        verbose: true,
+    })
+        .then(shopify.initialize)
+        .then(shopify.inventory_item.by.variant.p(ad.id || VARIANT_ID)) 
+        .make(sd => {
+            console.log("+", "inventory_item", JSON.stringify(sd.inventory_item, null, 2))
+        })
+        .except(_.error.log)
 } else if (action("by.id")) {
     _.promise({
         shopify$cfg: shopifyd,

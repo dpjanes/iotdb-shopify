@@ -36,9 +36,6 @@ const get = _.promise((self, done) => {
 
         .make(sd => {
             sd.url = `${_util.api(sd)}/inventory_items/${sd.inventory_item_id}.json`
-            // sd.url = _util.extend_with_query(sd.url, { ids: sd.variant.id })
-
-            console.log("URL", sd.url)
         })
         .then(fetch.get)
         .then(fetch.go.json)
@@ -67,14 +64,14 @@ get.p = _.p(get)
 /**
  */
 const by_variant = _.promise((self, done) => {
+    const shopify = require("..")
+
     _.promise(self)
         .validate(by_variant)
 
+        .conditional(sd => _.is.Atomic(sd.variant), shopify.variant.get.p(self.variant))
         .make(sd => {
             sd.url = `${_util.api(sd)}/inventory_items/${sd.variant.inventory_item_id}.json`
-            // sd.url = _util.extend_with_query(sd.url, { ids: sd.variant.id })
-
-            console.log("URL", sd.url)
         })
         .then(fetch.get)
         .then(fetch.go.json)
@@ -90,7 +87,7 @@ by_variant.method = "inventory_item.by.variant"
 by_variant.description = `Get the Inventory Item associated with a Variant`
 by_variant.requires = {
     shopify: _.is.Dictionary,
-    variant: _.is.Dictionary,
+    variant: [ _.is.Dictionary, _.is.Integer, _.is.String, ],
 }
 by_variant.produces = {
     inventory_item: _.is.JSON,
