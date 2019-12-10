@@ -1,5 +1,5 @@
 /*
- *  product/index.js
+ *  product/inventory_item/index.js
  *
  *  David Janes
  *  IOTDB.org
@@ -24,15 +24,12 @@
 
 module.exports = Object.assign(
     {},
-    require("./count"),
-    require("./create"),
-    require("./delete"),
-    require("./get"),
-    require("./list"),
-    require("./patch"),
-    require("./synthesize"),
+    require("./associate"),
+    // require("./count"),
+    // require("./create"),
+    // require("./delete"),
+    // require("./get"),
+    // require("./list"),
+    // require("./patch"),
     {}
 )
-
-module.exports.variant = require("./variant")
-module.exports.inventory_item = require("./inventory_item")
