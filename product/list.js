@@ -24,9 +24,6 @@
 
 const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
-const links = require("iotdb-links")
-
-const URL = require("url").URL
 
 const logger = require("../logger")(__filename)
 const _util = require("../lib/_util")
@@ -38,38 +35,20 @@ const list = _.promise((self, done) => {
         .validate(list)
 
         .make(sd => {
-            sd.products = []
-            sd.cursor = {}
             sd.url = `${_util.api(sd)}/products.json`
 
             if (sd.pager) {
                 sd.url = _util.extend_with_query(sd.url, { [ page_info ]: sd.pager })
             }
+
             if (sd.query) {
                 sd.url = _util.extend_with_query(sd.url, sd.query)
             }
         })
         .then(fetch.get)
         .then(fetch.go.json)
-        .make(sd => {
-            sd.products = sd.json.products
-
-            const next = _.flatten(_.d.list(sd.headers, "link", [])
-                .map(link => links.parse.flat(link)))
-                .filter(linkd => linkd.rel === "next")
-                .map(linkd => linkd.url)
-                .find(url => url)
-            if (next) {
-                const url = new URL(next)
-                const page_info = url.searchParams.get("page_info")
-                if (_.is.String(page_info)) {
-                    sd.cursor = {
-                        next: page_info,
-                        has_next: true,
-                    }
-                }
-            }
-        })
+        .add("json/products")
+        .then(_util.build_cursor)
 
         .end(done, self, list)
 })

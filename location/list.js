@@ -24,9 +24,6 @@
 
 const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
-const links = require("iotdb-links")
-
-const URL = require("url").URL
 
 const logger = require("../logger")(__filename)
 const _util = require("../lib/_util")
@@ -38,8 +35,6 @@ const list = _.promise((self, done) => {
         .validate(list)
 
         .make(sd => {
-            sd.locations = []
-            sd.cursor = {}
             sd.url = `${_util.api(sd)}/locations.json`
 
             if (sd.pager) {
@@ -48,25 +43,8 @@ const list = _.promise((self, done) => {
         })
         .then(fetch.get)
         .then(fetch.go.json)
-        .make(sd => {
-            sd.locations = sd.json.locations
-
-            const next = _.flatten(_.d.list(sd.headers, "link", [])
-                .map(link => links.parse.flat(link)))
-                .filter(linkd => linkd.rel === "next")
-                .map(linkd => linkd.url)
-                .find(url => url)
-            if (next) {
-                const url = new URL(next)
-                const page_info = url.searchParams.get("page_info")
-                if (_.is.String(page_info)) {
-                    sd.cursor = {
-                        next: page_info,
-                        has_next: true,
-                    }
-                }
-            }
-        })
+        .add("json/locations")
+        .then(_util.build_cursor)
 
         .end(done, self, list)
 })
