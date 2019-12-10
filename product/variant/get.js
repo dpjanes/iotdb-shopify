@@ -39,7 +39,7 @@ const get = _.promise((self, done) => {
         })
         .then(fetch.get)
         .then(fetch.go.json)
-        .except(_.error.otherwise(404, sd => sd.json = null))
+        .except(_.error.otherwise(404, { json: null }))
         .make(sd => {
             sd.variant = sd.json && sd.json.variant || null
         })

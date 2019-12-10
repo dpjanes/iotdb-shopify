@@ -43,7 +43,7 @@ const list = _.promise((self, done) => {
         })
         .then(fetch.get)
         .then(fetch.go.json)
-        .except(_.error.otherwise(404, sd => sd.json = { variants: [] }))
+        .except(_.error.otherwise(404, { variants: [] }))
         .add("json/variants")
         .then(_util.build_cursor)
 
