@@ -1,5 +1,5 @@
 /*
- *  product/list.js
+ *  product/variant/list.js
  *
  *  David Janes
  *  IOTDB.org
@@ -25,17 +25,17 @@
 const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
 
-const logger = require("../logger")(__filename)
-const _util = require("../lib/_util")
+const logger = require("../../logger")(__filename)
+const _util = require("../../lib/_util")
 
 /**
  */
-const list_product_id = _.promise((self, done) => {
+const list = _.promise((self, done) => {
     _.promise(self)
-        .validate(list_product_id)
+        .validate(list)
 
         .make(sd => {
-            sd.url = `${_util.api(sd)}/products/${sd.product_id}/variants.json`
+            sd.url = `${_util.api(sd)}/products/${sd.product.id}/variants.json`
 
             if (sd.pager) {
                 sd.url = _util.extend_with_query(sd.url, { [ page_info ]: sd.pager })
@@ -47,30 +47,28 @@ const list_product_id = _.promise((self, done) => {
         .add("json/variants")
         .then(_util.build_cursor)
 
-        .end(done, self, list_product_id)
+        .end(done, self, list)
 })
 
-list_product_id.method = "variant.list.product_id"
-list_product_id.description = `List the variants of a Product (by product_id)`
-list_product_id.requires = {
+list.method = "product.variant.list"
+list.description = `List the Variants of a Product`
+list.requires = {
     shopify: _.is.Dictionary,
-    product_id: _.is.Integer,
+    product: _.is.Dictionary,
 }
-list_product_id.accepts = {
+list.accepts = {
     pager: _.is.String,
 }
-list_product_id.produces = {
+list.produces = {
     variants: _.is.Array.of.Dictionary,
     cursor: _.is.Dictionary,
 }
-list_product_id.params = {
-    product_id: _.p.normal,
+list.params = {
+    product: _.p.normal,
 }
-list_product_id.p = _.p(list_product_id)
+list.p = _.p(list)
 
 /**
  *  API
  */
-exports.list = {
-    product_id: list_product_id,
-}
+exports.list = list

@@ -33,3 +33,5 @@ module.exports = Object.assign(
     require("./synthesize"),
     {}
 )
+
+module.exports.variant = require("./variant")

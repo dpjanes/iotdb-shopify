@@ -1,5 +1,5 @@
 /*
- *  products/index.js
+ *  product/variant/index.js
  *
  *  David Janes
  *  IOTDB.org

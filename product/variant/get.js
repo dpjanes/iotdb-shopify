@@ -1,5 +1,5 @@
 /*
- *  variant/get.js
+ *  product/variant/get.js
  *
  *  David Janes
  *  IOTDB.org
@@ -25,8 +25,8 @@
 const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
 
-const logger = require("../logger")(__filename)
-const _util = require("../lib/_util")
+const logger = require("../../logger")(__filename)
+const _util = require("../../lib/_util")
 
 /**
  */
@@ -47,7 +47,7 @@ const get = _.promise((self, done) => {
         .end(done, self, get)
 })
 
-get.method = "variant.get"
+get.method = "product.variant.get"
 get.description = `Get a Variant`
 get.requires = {
     shopify: _.is.Dictionary,

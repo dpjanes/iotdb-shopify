@@ -1,5 +1,5 @@
 /*
- *  variant/create.js
+ *  product/variant/create.js
  *
  *  David Janes
  *  IOTDB.org
@@ -25,8 +25,8 @@
 const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
 
-const logger = require("../logger")(__filename)
-const _util = require("../lib/_util")
+const logger = require("../../logger")(__filename)
+const _util = require("../../lib/_util")
 
 /**
  */
@@ -35,7 +35,7 @@ const create = _.promise((self, done) => {
         .validate(create)
 
         .make(sd => {
-            sd.url = `${_util.api(sd)}/products/${sd.product_id}/variants.json`
+            sd.url = `${_util.api(sd)}/products/${sd.product.id}/variants.json`
 
             sd.json = {
                 variant: sd.variant,
@@ -51,11 +51,11 @@ const create = _.promise((self, done) => {
         .end(done, self, create)
 })
 
-create.method = "variant.create"
+create.method = "product.variant.create"
 create.description = `Create a new Variant`
 create.requires = {
     shopify: _.is.Dictionary,
-    product_id: _.is.Integer,
+    product: _.is.Dictionary,
     variant: {
         option1: _.is.String,
     },
@@ -67,7 +67,7 @@ create.produces = {
     variant: _.is.JSON,
 }
 create.params = {
-    product_id: _.is.Integer,
+    product: _.p.normal,
     variant: _.p.normal,
 }
 create.p = _.p(create)

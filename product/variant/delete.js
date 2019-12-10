@@ -1,5 +1,5 @@
 /*
- *  variant/delete.js
+ *  product/variant/delete.js
  *
  *  David Janes
  *  IOTDB.org
@@ -25,8 +25,8 @@
 const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
 
-const logger = require("../logger")(__filename)
-const _util = require("../lib/_util")
+const logger = require("../../logger")(__filename)
+const _util = require("../../lib/_util")
 
 /**
  */
@@ -36,10 +36,8 @@ const delete_ = _.promise((self, done) => {
     _.promise(self)
         .validate(delete_)
 
-        .then(shopify.variant.get)
-        .conditional(sd => !sd.variant, _.promise.bail)
         .make(sd => {
-            sd.url = `${_util.api(sd)}/products/${sd.variant.product_id}/variants/${sd.variant_id}.json`
+            sd.url = `${_util.api(sd)}/products/${sd.variant.product_id}/variants/${sd.variant.id}.json`
         })
         .then(fetch.delete)
         .then(fetch.go.json)
@@ -47,20 +45,16 @@ const delete_ = _.promise((self, done) => {
         .end(done, self, delete_)
 })
 
-delete_.method = "variant.delete"
-delete_.description = `Delete a Variant
-
-    Note that unlike the Shopify API, you don't need to specify the Product,
-    we figure it out for you.
-`
+delete_.method = "product.variant.delete"
+delete_.description = `Delete a Variant`
 delete_.requires = {
     shopify: _.is.Dictionary,
-    variant_id: _.is.Number,
+    variant: _.is.Dictionary,
 }
 delete_.produces = {
 }
 delete_.params = {
-    variant_id: _.p.normal,
+    variant: _.p.normal,
 }
 delete_.p = _.p(delete_)
 

@@ -1,9 +1,9 @@
 /*
- *  variant/patch.js
+ *  product/variant/count.js
  *
  *  David Janes
  *  IOTDB.org
- *  2019-12-10
+ *  2019-12-04
  *
  *  Copyright (2013-2020) David P. Janes
  *
@@ -25,52 +25,47 @@
 const _ = require("iotdb-helpers")
 const fetch = require("iotdb-fetch")
 
-const logger = require("../logger")(__filename)
-const _util = require("../lib/_util")
+const logger = require("../../logger")(__filename)
+const _util = require("../../lib/_util")
 
 /**
  */
-const patch = _.promise((self, done) => {
+const count_product_id = _.promise((self, done) => {
     _.promise(self)
-        .validate(patch)
+        .validate(count_product_id)
 
         .make(sd => {
-            sd.url = `${_util.api(sd)}/variants/${sd.variant.id}.json`
-
-            sd.json = {
-                variant: sd.variant,
-            }
+            sd.url = `${_util.api(sd)}/products/${sd.product.id}/variants/count.json`
         })
-        .then(fetch.put)
-        .then(fetch.body.json)
+        .then(fetch.get)
         .then(fetch.go.json)
+        .except(_.error.otherwise(404, sd => sd.json = null))
         .make(sd => {
-            sd.variant = sd.json && sd.json.variant || null
+            sd.count = sd.json ? sd.json.count : 0
         })
 
-        .end(done, self, patch)
+        .end(done, self, count_product_id)
 })
 
-patch.method = "variant.patch"
-patch.description = `Patch Variant`
-patch.requires = {
+count_product_id.method = "product.variant.list.product_id"
+count_product_id.description = `Count the Variants of a Product`
+count_product_id.requires = {
     shopify: _.is.Dictionary,
-    variant: {
-        id: _.is.Number,
-    },
+    product: _.is.Dictionary,
 }
-patch.accepts = {
-    variant: _.is.JSON,
+count_product_id.accepts = {
 }
-patch.produces = {
-    variant: _.is.JSON,
+count_product_id.produces = {
+    count: _.is.Integer,
 }
-patch.params = {
-    variant: _.p.normal,
+count_product_id.params = {
+    product: _.p.normal,
 }
-patch.p = _.p(patch)
+count_product_id.p = _.p(count_product_id)
 
 /**
  *  API
  */
-exports.patch = patch
+exports.count = {
+    product_id: count_product_id,
+}
