@@ -1,5 +1,5 @@
 /*
- *  variant/get.js
+ *  variant/patch.js
  *
  *  David Janes
  *  IOTDB.org
@@ -30,38 +30,50 @@ const _util = require("../lib/_util")
 
 /**
  */
-const get = _.promise((self, done) => {
+const patch = _.promise((self, done) => {
     _.promise(self)
-        .validate(get)
+        .validate(patch)
 
         .make(sd => {
-            sd.url = `${_util.api(sd)}/variants/${sd.variant_id}.json`
+            sd.url = `${_util.api(sd)}/variants/${sd.variant.id}.json`
+
+            sd.json = {
+                variant: sd.variant,
+            }
+
+            console.log("HERE", sd.url, sd.json)
         })
-        .then(fetch.get)
+        .then(fetch.put)
+        .then(fetch.body.json)
         .then(fetch.go.json)
-        .except(_.error.otherwise(404, sd => sd.json = null))
         .make(sd => {
+            console.log("HERE:XXX", sd.json)
             sd.variant = sd.json && sd.json.variant || null
         })
 
-        .end(done, self, get)
+        .end(done, self, patch)
 })
 
-get.method = "variant.get"
-get.description = `Get a Variant`
-get.requires = {
+patch.method = "variant.patch"
+patch.description = `Patch Variant`
+patch.requires = {
     shopify: _.is.Dictionary,
-    variant_id: _.is.Number,
+    variant: {
+        id: _.is.Number,
+    },
 }
-get.produces = {
+patch.accepts = {
     variant: _.is.JSON,
 }
-get.params = {
-    variant_id: _.p.normal,
+patch.produces = {
+    variant: _.is.JSON,
 }
-get.p = _.p(get)
+patch.params = {
+    variant: _.p.normal,
+}
+patch.p = _.p(patch)
 
 /**
  *  API
  */
-exports.get = get
+exports.patch = patch

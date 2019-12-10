@@ -29,6 +29,6 @@ module.exports = Object.assign(
     // require("./delete"),
     require("./get"),
     require("./list"),
-    // require("./patch"),
+    require("./patch"),
     {}
 )

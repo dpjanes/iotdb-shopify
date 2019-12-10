@@ -77,6 +77,32 @@ if (action("variant.list")) {
             console.log("+", JSON.stringify(sd.variant, null, 2))
         })
         .except(_.error.log)
+} else if (action("variant.patch")) {
+    _.promise({
+        shopify$cfg: shopifyd,
+        verbose: true,
+    })
+        .then(shopify.initialize)
+        .then(shopify.variant.get.p(ad.id || VARIANT_ID))
+        .make(sd => {
+            console.log("+", "old", sd.variant.title)
+            const match = sd.variant.title.match(/^(.*) - (\d+)$/)
+            if (!match) {
+                sd.variant.title = `${sd.variant.title} - 1`
+            } else {
+                sd.variant.title = `${match[1]} - ${parseInt(match[2]) + 1}`
+            }
+
+            sd.variant = {
+                id: sd.variant.id,
+                title: sd.variant.title,
+            }
+        })
+        .then(shopify.variant.patch)
+        .make(sd => {
+            console.log("+", "new", sd.variant.title)
+        })
+        .except(_.error.log)
 } else if (!action_name) {
     console.log("#", "action required")
 } else {
