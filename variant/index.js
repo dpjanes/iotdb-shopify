@@ -24,7 +24,7 @@
 
 module.exports = Object.assign(
     {},
-    // require("./count"),
+    require("./count"),
     // require("./create"),
     // require("./delete"),
     // require("./get"),

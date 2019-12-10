@@ -54,6 +54,17 @@ if (action("variant.list")) {
             console.log("+", JSON.stringify(sd.cursor, null, 2))
         })
         .except(_.error.log)
+} else if (action("variant.count")) {
+    _.promise({
+        shopify$cfg: shopifyd,
+        verbose: true,
+    })
+        .then(shopify.initialize)
+        .then(shopify.variant.count.product_id.p(PRODUCT_ID))
+        .make(sd => {
+            console.log("+", JSON.stringify(sd.count, null, 2))
+        })
+        .except(_.error.log)
 } else if (!action_name) {
     console.log("#", "action required")
 } else {
