@@ -28,6 +28,8 @@ const fetch = require("iotdb-fetch")
 const logger = require("../logger")(__filename)
 const _util = require("../lib/_util")
 
+const path = require("path")
+
 /**
  */
 const create = _.promise((self, done) => {
@@ -56,12 +58,15 @@ create.description = `Create a new Image`
 create.requires = {
     shopify: _.is.Dictionary,
     product: _.is.Dictionary,
-    image: {
-        option1: _.is.String,
-    },
+    image: _.is.Dictionary,
 }
 create.accepts = {
-    image: _.is.JSON,
+    image: {
+        attachment: _.is.String,
+        url: _.is.AbsoluteURL,
+        position: _.is.Number,
+        filename: _.is.String,
+    },
 }
 create.produces = {
     image: _.is.JSON,
@@ -73,6 +78,52 @@ create.params = {
 create.p = _.p(create)
 
 /**
+ */
+const create_document = _.promise((self, done) => {
+    _.promise(self)
+        .validate(create_document)
+
+        .make(sd => {
+            sd.url = `${_util.api(sd)}/products/${sd.product.id}/images.json`
+
+            sd.json = {
+                image: {
+                    attachment: sd.document.toString("base64"),
+                },
+            }
+
+            if (sd.document_name) {
+                sd.json.image.filename = path.basename(sd.document_name)
+            }
+        })
+        .then(fetch.post)
+        .then(fetch.body.json)
+        .then(fetch.go.json)
+        .make(sd => {
+            sd.image = sd.json && sd.json.image || null
+        })
+
+        .end(done, self, create_document)
+})
+
+create_document.method = "product.image.create_document"
+create_document.description = `Create a new Image from self.document`
+create_document.requires = {
+    shopify: _.is.Dictionary,
+    product: _.is.Dictionary,
+
+    document: _.is.Buffer,
+    document_media_type: x => _.is.String(x) && x.startsWith("image/"),
+}
+create_document.accepts = {
+    document_name: _.is.String,
+}
+create_document.produces = {
+    image: _.is.JSON,
+}
+
+/**
  *  API
  */
 exports.create = create
+exports.create.document = create_document
