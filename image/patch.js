@@ -35,7 +35,7 @@ const patch = _.promise((self, done) => {
         .validate(patch)
 
         .make(sd => {
-            sd.url = `${_util.api(sd)}/products/${sd.product_id}/images/${sd.image_id}.json`
+            sd.url = `${_util.api(sd)}/products/${sd.image.product_id}/images/${sd.image.id}.json`
 
             sd.json = {
                 image: sd.image,
@@ -56,6 +56,7 @@ patch.description = `Patch Image`
 patch.requires = {
     shopify: _.is.Dictionary,
     image: {
+        product_id: _.is.Number,
         id: _.is.Number,
     },
 }
