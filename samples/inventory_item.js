@@ -44,48 +44,25 @@ const PRODUCT_ID = 4378702610571
 const VARIANT_ID = 31438769553547
 const INVENTORY_ITEM_ID = 32985999638667
 
-if (action("by.variant")) {
+if (action("inventory.by_variant")) {
     _.promise({
         shopify$cfg: shopifyd,
         verbose: true,
     })
         .then(shopify.initialize)
         .then(shopify.variant.get.p(ad.id || VARIANT_ID)) 
-        .then(shopify.inventory_item.by.variant)
+        .then(shopify.inventory_item.get.by_variant)
         .make(sd => {
-            console.log("+", "variant", JSON.stringify(sd.variant, null, 2))
             console.log("+", "inventory_item", JSON.stringify(sd.inventory_item, null, 2))
         })
         .except(_.error.log)
-} else if (action("by.variant-2")) {
+} else if (action("inventory.get")) {
     _.promise({
         shopify$cfg: shopifyd,
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.inventory_item.by.variant.p(ad.id || VARIANT_ID)) 
-        .make(sd => {
-            console.log("+", "inventory_item", JSON.stringify(sd.inventory_item, null, 2))
-        })
-        .except(_.error.log)
-} else if (action("by.id")) {
-    _.promise({
-        shopify$cfg: shopifyd,
-        verbose: true,
-    })
-        .then(shopify.initialize)
-        .then(shopify.inventory_item.by.id.p(ad.id || INVENTORY_ITEM_ID))
-        .make(sd => {
-            console.log("+", "inventory_item", JSON.stringify(sd.inventory_item, null, 2))
-        })
-        .except(_.error.log)
-} else if (action("get")) {
-    _.promise({
-        shopify$cfg: shopifyd,
-        verbose: true,
-    })
-        .then(shopify.initialize)
-        .then(shopify.inventory_item.get(ad.id || INVENTORY_ITEM_ID))
+        .then(shopify.inventory_item.get.p(ad.id || INVENTORY_ITEM_ID))
         .make(sd => {
             console.log("+", "inventory_item", JSON.stringify(sd.inventory_item, null, 2))
         })
@@ -95,4 +72,3 @@ if (action("by.variant")) {
 } else {
     console.log("#", "unknown action - should be one of:", actions.join(", "))
 }
-
