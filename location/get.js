@@ -31,11 +31,14 @@ const _util = require("../lib/_util")
 /**
  */
 const get = _.promise((self, done) => {
+    const shopify = require("..")
+
     _.promise(self)
         .validate(get)
 
+        .then(shopify.location.synthesize)
         .make(sd => {
-            sd.url = `${_util.api(sd)}/locations/${sd.location_id}.json`
+            sd.url = `${_util.api(sd)}/locations/${sd.location.id}.json`
         })
         .then(fetch.get)
         .then(fetch.go.json)
@@ -58,13 +61,13 @@ get.method = "location.get"
 get.description = `Get a Location`
 get.requires = {
     shopify: _.is.shopify,
-    location_id: _.is.Integer,
+    location: _.is.shopify.synthesize,
 }
 get.produces = {
-    location: _.is.JSON,
+    location: _.is.shopify.location,
 }
 get.params = {
-    location_id: _.p.normal,
+    location: _.p.normal,
 }
 get.p = _.p(get)
 
