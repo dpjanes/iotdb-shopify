@@ -36,7 +36,7 @@ const count = _.promise((self, done) => {
     _.promise(self)
         .validate(count)
 
-        .conditional(sd => _.is.Atomic(sd.product), shopify.product.get.p(self.product))
+        .then(shopify.product.synthesize)
         .make(sd => {
             sd.url = `${_util.api(sd)}/products/${sd.product.id}/images/count.json`
         })
@@ -50,7 +50,7 @@ const count = _.promise((self, done) => {
         .end(done, self, count)
 })
 
-count.method = "product.image.count"
+count.method = "image.count"
 count.description = `Count the Images of a Product`
 count.requires = {
     shopify: _.is.Dictionary,

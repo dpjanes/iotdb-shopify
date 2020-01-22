@@ -51,7 +51,7 @@ const patch = _.promise((self, done) => {
         .end(done, self, patch)
 })
 
-patch.method = "product.image.patch"
+patch.method = "image.patch"
 patch.description = `Patch Image`
 patch.requires = {
     shopify: _.is.Dictionary,

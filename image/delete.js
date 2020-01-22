@@ -31,8 +31,6 @@ const _util = require("../lib/_util")
 /**
  */
 const delete_ = _.promise((self, done) => {
-    const shopify = require("..")
-
     _.promise(self)
         .validate(delete_)
 
@@ -45,7 +43,7 @@ const delete_ = _.promise((self, done) => {
         .end(done, self, delete_)
 })
 
-delete_.method = "product.image.delete"
+delete_.method = "image.delete"
 delete_.description = `Delete Image`
 delete_.requires = {
     shopify: _.is.Dictionary,

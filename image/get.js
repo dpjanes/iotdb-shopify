@@ -31,11 +31,14 @@ const _util = require("../lib/_util")
 /**
  */
 const get = _.promise((self, done) => {
+    const shopify = require("..")
+
     _.promise(self)
         .validate(get)
 
+        .then(shopify.product.synthesize)
         .make(sd => {
-            sd.url = `${_util.api(sd)}/products/${sd.product_id}/images/${sd.image_id}.json`
+            sd.url = `${_util.api(sd)}/products/${sd.product.id}/images/${sd.image_id}.json`
         })
         .then(fetch.get)
         .then(fetch.go.json)
@@ -47,18 +50,18 @@ const get = _.promise((self, done) => {
         .end(done, self, get)
 })
 
-get.method = "product.image.get"
+get.method = "image.get"
 get.description = `Get Image`
 get.requires = {
     shopify: _.is.Dictionary,
-    product_id: _.is.Integer,
+    product: _.is.Integer,
     image_id: _.is.Integer,
 }
 get.produces = {
     image: _.is.JSON,
 }
 get.params = {
-    product_id: _.p.normal,
+    product: _.p.normal,
     image_id: _.p.normal,
 }
 get.p = _.p(get)

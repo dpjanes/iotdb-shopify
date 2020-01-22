@@ -36,7 +36,7 @@ const list = _.promise((self, done) => {
     _.promise(self)
         .validate(list)
 
-        .conditional(sd => _.is.Atomic(sd.product), shopify.product.get.p(self.product))
+        .then(shopify.product.synthesize)
         .make(sd => {
             sd.url = `${_util.api(sd)}/products/${sd.product.id}/images.json`
 
@@ -53,7 +53,7 @@ const list = _.promise((self, done) => {
         .end(done, self, list)
 })
 
-list.method = "product.image.list"
+list.method = "image.list"
 list.description = `List the Images of a Product`
 list.requires = {
     shopify: _.is.Dictionary,

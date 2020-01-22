@@ -53,7 +53,7 @@ const create = _.promise((self, done) => {
         .end(done, self, create)
 })
 
-create.method = "product.image.create"
+create.method = "image.create"
 create.description = `Create a new Image`
 create.requires = {
     shopify: _.is.Dictionary,
