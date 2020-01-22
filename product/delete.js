@@ -53,7 +53,7 @@ delete_.method = "product.delete"
 delete_.description = `Delete a Product`
 delete_.requires = {
     shopify: _.is.shopify,
-    product: _.is.shopify.makes_id,
+    product: _.is.shopify.synthesize,
 }
 delete_.produces = {
 }

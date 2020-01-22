@@ -54,7 +54,7 @@ get.method = "product.by.id"
 get.description = `Get a Product`
 get.requires = {
     shopify: _.is.shopify,
-    product: _.is.shopify.makes_id,
+    product: _.is.shopify.synthesize,
 }
 get.produces = {
     product: _.is.shopify.product,

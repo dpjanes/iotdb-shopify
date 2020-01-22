@@ -54,7 +54,7 @@ count.method = "variant.count"
 count.description = `Count the Variants of a Product`
 count.requires = {
     shopify: _.is.shopify,
-    product: _.is.shopify.makes_id,
+    product: _.is.shopify.synthesize,
 }
 count.accepts = {
 }

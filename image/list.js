@@ -57,7 +57,7 @@ list.method = "image.list"
 list.description = `List the Images of a Product`
 list.requires = {
     shopify: _.is.shopify,
-    product: _.is.shopify.makes_id,
+    product: _.is.shopify.synthesize,
 }
 list.accepts = {
     pager: _.is.String,
