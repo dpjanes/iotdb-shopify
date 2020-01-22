@@ -31,9 +31,12 @@ const _util = require("../lib/_util")
 /**
  */
 const delete_ = _.promise((self, done) => {
+    const shopify = require("..")
+
     _.promise(self)
         .validate(delete_)
 
+        .then(shopify.product.synthesize)
         .make(sd => {
             sd.url = `${_util.api(sd)}/products/${sd.product.id}.json`
         })
@@ -50,7 +53,7 @@ delete_.method = "product.delete"
 delete_.description = `Delete a Product`
 delete_.requires = {
     shopify: _.is.Dictionary,
-    product: _.is.Dictionary,
+    product: [ _.is.Integer, _.is.String, _.is.Dictionary, ],
 }
 delete_.produces = {
 }
@@ -59,7 +62,6 @@ delete_.params = {
 delete_.p = _.p(delete_)
 
 /**
- */
 const by_product_id = _.promise((self, done) => {
     const shopify = require("..")
 
@@ -75,15 +77,16 @@ const by_product_id = _.promise((self, done) => {
 by_product_id.method = "product.delete.by_product_id"
 by_product_id.description = ``
 by_product_id.requires = {
-    product_id: _.is.Number,
+    product_id: _.is.Integer,
 }
 by_product_id.params = {
     product_id: _.p.normal,
 }
 by_product_id.p = _.p(by_product_id)
+ */
 
 /**
  *  API
  */
 exports.delete = delete_
-exports.delete.by_product_id = by_product_id
+// exports.delete.by_product_id = by_product_id

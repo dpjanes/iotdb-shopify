@@ -58,7 +58,7 @@ get.method = "location.get"
 get.description = `Get a Location`
 get.requires = {
     shopify: _.is.Dictionary,
-    location_id: _.is.Number,
+    location_id: _.is.Integer,
 }
 get.produces = {
     location: _.is.JSON,

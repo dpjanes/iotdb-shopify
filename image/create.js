@@ -64,7 +64,7 @@ create.accepts = {
     image: {
         attachment: _.is.String,
         url: _.is.AbsoluteURL,
-        position: _.is.Number,
+        position: _.is.Integer,
         filename: _.is.String,
     },
 }

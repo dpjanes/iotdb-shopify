@@ -42,7 +42,7 @@ synthesize.method = "product.synthesize"
 synthesize.description = `Create a Product from product_id`
 synthesize.requires = {
     shopify: _.is.Dictionary,
-    product_id: _.is.Number,
+    product_id: _.is.Integer,
 }
 synthesize.accepts = {
 }

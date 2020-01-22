@@ -56,7 +56,7 @@ patch.description = `Patch Product`
 patch.requires = {
     shopify: _.is.Dictionary,
     product: {
-        id: _.is.Number,
+        id: _.is.Integer,
     },
 }
 patch.accepts = {

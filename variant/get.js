@@ -51,7 +51,7 @@ get.method = "product.variant.get"
 get.description = `Get a Variant`
 get.requires = {
     shopify: _.is.Dictionary,
-    variant_id: _.is.Number,
+    variant_id: _.is.Integer,
 }
 get.produces = {
     variant: _.is.JSON,

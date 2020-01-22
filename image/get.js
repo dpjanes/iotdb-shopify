@@ -51,8 +51,8 @@ get.method = "product.image.get"
 get.description = `Get Image`
 get.requires = {
     shopify: _.is.Dictionary,
-    product_id: _.is.Number,
-    image_id: _.is.Number,
+    product_id: _.is.Integer,
+    image_id: _.is.Integer,
 }
 get.produces = {
     image: _.is.JSON,

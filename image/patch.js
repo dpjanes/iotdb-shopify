@@ -56,8 +56,8 @@ patch.description = `Patch Image`
 patch.requires = {
     shopify: _.is.Dictionary,
     image: {
-        product_id: _.is.Number,
-        id: _.is.Number,
+        product_id: _.is.Integer,
+        id: _.is.Integer,
     },
 }
 patch.accepts = {
