@@ -58,7 +58,7 @@ list.method = "variant.list"
 list.description = `List the Variants of a Product`
 list.requires = {
     shopify: _.is.shopify,
-    product: [ _.is.Integer, _.is.String, _.is.Dictionary, ],
+    product: _.is.shopify.makes_id,
 }
 list.accepts = {
     pager: _.is.String,

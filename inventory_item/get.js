@@ -87,7 +87,7 @@ by_variant.method = "inventory_item.by.variant"
 by_variant.description = `Get the Inventory Item associated with a Variant`
 by_variant.requires = {
     shopify: _.is.shopify,
-    variant: [ _.is.Dictionary, _.is.Integer, _.is.String, ],
+    variant: _.is.shopify.makes_id,
 }
 by_variant.produces = {
     inventory_item: _.is.JSON,

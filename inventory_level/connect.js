@@ -60,8 +60,8 @@ connect.method = "inventory_level.connect"
 connect.description = `Connect a Inventory Level to a Location`
 connect.requires = {
     shopify: _.is.shopify,
-    inventory_item: [ _.is.Integer, _.is.String, _.is.Dictionary, ], 
-    location: [ _.is.Integer, _.is.String, _.is.Dictionary, ], 
+    inventory_item: _.is.shopify.makes_id,
+    location: _.is.shopify.makes_id,
 }
 connect.accepts = {
 }

@@ -54,7 +54,7 @@ count.method = "image.count"
 count.description = `Count the Images of a Product`
 count.requires = {
     shopify: _.is.shopify,
-    product: [ _.is.Integer, _.is.String, _.is.Dictionary, ],
+    product: _.is.shopify.makes_id,
 }
 count.accepts = {
 }
