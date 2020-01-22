@@ -49,8 +49,7 @@ if (action("variant.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.product.synthesize.p(ad.id || PRODUCT_ID)) // you could also get
-        .then(shopify.variant.list)
+        .then(shopify.variant.list.p(ad.id || PRODUCT_ID)) // you could also get
         .make(sd => {
             console.log("+", JSON.stringify(sd.variants, null, 2))
             console.log("+", JSON.stringify(sd.cursor, null, 2))
@@ -62,8 +61,7 @@ if (action("variant.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.product.synthesize.p(ad.id || PRODUCT_ID)) // you could also get
-        .then(shopify.variant.count)
+        .then(shopify.variant.count.p(ad.id || PRODUCT_ID)) // you could also get
         .make(sd => {
             console.log("+", JSON.stringify(sd.count, null, 2))
         })

@@ -45,11 +45,14 @@ const delete_ = _.promise((self, done) => {
         .end(done, self, delete_)
 })
 
-delete_.method = "product.variant.delete"
+delete_.method = "variant.delete"
 delete_.description = `Delete a Variant`
 delete_.requires = {
     shopify: _.is.Dictionary,
-    variant: _.is.Dictionary,
+    variant: {
+        id: _.is.Integer,
+        product_id: _.is.Integer,
+    },
 }
 delete_.produces = {
 }

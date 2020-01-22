@@ -47,7 +47,7 @@ const get = _.promise((self, done) => {
         .end(done, self, get)
 })
 
-get.method = "product.variant.get"
+get.method = "variant.get"
 get.description = `Get a Variant`
 get.requires = {
     shopify: _.is.Dictionary,

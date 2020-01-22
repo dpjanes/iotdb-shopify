@@ -36,9 +36,10 @@ const list = _.promise((self, done) => {
     _.promise(self)
         .validate(list)
 
-        .conditional(sd => _.is.Atomic(sd.product), shopify.product.get.p(self.product))
+        .then(shopify.product.synthesize)
         .make(sd => {
             sd.url = `${_util.api(sd)}/products/${sd.product.id}/variants.json`
+            console.log(sd.url)
 
             if (sd.pager) {
                 sd.url = _util.extend_with_query(sd.url, { [ page_info ]: sd.pager })
@@ -53,7 +54,7 @@ const list = _.promise((self, done) => {
         .end(done, self, list)
 })
 
-list.method = "product.variant.list"
+list.method = "variant.list"
 list.description = `List the Variants of a Product`
 list.requires = {
     shopify: _.is.Dictionary,

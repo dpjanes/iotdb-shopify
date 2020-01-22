@@ -51,7 +51,7 @@ const patch = _.promise((self, done) => {
         .end(done, self, patch)
 })
 
-patch.method = "product.variant.patch"
+patch.method = "variant.patch"
 patch.description = `Patch Variant`
 patch.requires = {
     shopify: _.is.Dictionary,

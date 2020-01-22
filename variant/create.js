@@ -31,9 +31,12 @@ const _util = require("../lib/_util")
 /**
  */
 const create = _.promise((self, done) => {
+    const shopify = require("..")
+
     _.promise(self)
         .validate(create)
 
+        .then(shopify.product.synthesize)
         .make(sd => {
             sd.url = `${_util.api(sd)}/products/${sd.product.id}/variants.json`
 
@@ -51,14 +54,12 @@ const create = _.promise((self, done) => {
         .end(done, self, create)
 })
 
-create.method = "product.variant.create"
+create.method = "variant.create"
 create.description = `Create a new Variant`
 create.requires = {
     shopify: _.is.Dictionary,
-    product: _.is.Dictionary,
-    variant: {
-        option1: _.is.String,
-    },
+    product: [ _.is.Integer, _.is.String, _.is.Dictionary, ],
+    variant: _.is.Dictionary,
 }
 create.accepts = {
     variant: _.is.JSON,

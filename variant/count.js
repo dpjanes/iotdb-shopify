@@ -31,10 +31,12 @@ const _util = require("../lib/_util")
 /**
  */
 const count = _.promise((self, done) => {
+    const shopify = require("..")
+
     _.promise(self)
         .validate(count)
 
-        .conditional(sd => _.is.Atomic(sd.product), shopify.product.get.p(self.product))
+        .then(shopify.product.synthesize)
         .make(sd => {
             sd.url = `${_util.api(sd)}/products/${sd.product.id}/variants/count.json`
         })
@@ -48,7 +50,7 @@ const count = _.promise((self, done) => {
         .end(done, self, count)
 })
 
-count.method = "product.variant.count"
+count.method = "variant.count"
 count.description = `Count the Variants of a Product`
 count.requires = {
     shopify: _.is.Dictionary,
