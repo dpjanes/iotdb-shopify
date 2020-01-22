@@ -1,9 +1,9 @@
 /*
- *  index.js
+ *  product/inventory_level/index.js
  *
  *  David Janes
  *  IOTDB.org
- *  2019-11-13
+ *  2020-01-21
  *
  *  Copyright (2013-2020) David P. Janes
  *
@@ -22,10 +22,10 @@
 
 "use strict"
 
-module.exports = require("./lib")
-module.exports.product = require("./product")
-module.exports.location = require("./location")
-module.exports.variant = require("./variant")
-module.exports.image = require("./image")
-module.exports.inventory_item = require("./inventory_item")
-module.exports.inventory_level = require("./inventory_level")
+module.exports = Object.assign(
+    {},
+    require("./connect"),
+    {}
+)
+
+module.exports.synthesize = require("../lib/_util").synthesize("inventory_level")
