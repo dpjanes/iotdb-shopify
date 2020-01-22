@@ -40,6 +40,8 @@ const action = name => {
     return action_name === name
 }
 
+const LOCATION_ID = 35326525579
+
 if (action("location.list")) {
     _.promise({
         shopify$cfg: shopifyd,
@@ -72,7 +74,7 @@ if (action("location.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.location.get.p(4378702610571))
+        .then(shopify.location.get.p(LOCATION_ID))
         .make(sd => {
             console.log("+", sd.location)
         })

@@ -29,3 +29,5 @@ module.exports = Object.assign(
     require("./list"),
     {}
 )
+
+module.exports.synthesize = require("../lib/_util").synthesize("location")

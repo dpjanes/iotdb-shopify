@@ -32,3 +32,5 @@ module.exports = Object.assign(
     require("./patch"),
     {}
 )
+
+module.exports.synthesize = require("../lib/_util").synthesize("image")

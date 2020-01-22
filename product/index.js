@@ -30,6 +30,8 @@ module.exports = Object.assign(
     require("./get"),
     require("./list"),
     require("./patch"),
-    require("./synthesize"),
+    // require("./synthesize"),
     {}
 )
+
+module.exports.synthesize = require("../lib/_util").synthesize("product")
