@@ -37,8 +37,9 @@ const get = _.promise((self, done) => {
         .validate(get)
 
         .then(shopify.product.synthesize)
+        .then(shopify.image.synthesize)
         .make(sd => {
-            sd.url = `${_util.api(sd)}/products/${sd.product.id}/images/${sd.image_id}.json`
+            sd.url = `${_util.api(sd)}/products/${sd.product.id}/images/${sd.image.id}.json`
         })
         .then(fetch.get)
         .then(fetch.go.json)
@@ -54,15 +55,15 @@ get.method = "image.get"
 get.description = `Get Image`
 get.requires = {
     shopify: _.is.shopify,
-    product: _.is.Integer,
-    image_id: _.is.Integer,
+    product: _.is.shopify.synthesize,
+    image: _.is.shopify.synthesize,
 }
 get.produces = {
-    image: _.is.JSON,
+    image: _.is.shopify.image,
 }
 get.params = {
     product: _.p.normal,
-    image_id: _.p.normal,
+    image: _.p.normal,
 }
 get.p = _.p(get)
 

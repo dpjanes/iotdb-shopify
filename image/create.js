@@ -33,9 +33,12 @@ const path = require("path")
 /**
  */
 const create = _.promise((self, done) => {
+    const shopify = require("..")
+
     _.promise(self)
         .validate(create)
 
+        .then(shopify.product.synthesize)
         .make(sd => {
             sd.url = `${_util.api(sd)}/products/${sd.product.id}/images.json`
 
@@ -57,8 +60,8 @@ create.method = "image.create"
 create.description = `Create a new Image`
 create.requires = {
     shopify: _.is.shopify,
-    product: _.is.Dictionary,
-    image: _.is.Dictionary,
+    product: _.is.shopify.synthesize,
+    image: _.is.shopify.data,
 }
 create.accepts = {
     image: {
@@ -69,7 +72,7 @@ create.accepts = {
     },
 }
 create.produces = {
-    image: _.is.JSON,
+    image: _.is.shopify.image,
 }
 create.params = {
     product: _.p.normal,
@@ -80,9 +83,12 @@ create.p = _.p(create)
 /**
  */
 const create_document = _.promise((self, done) => {
+    const shopify = require("..")
+
     _.promise(self)
         .validate(create_document)
 
+        .then(shopify.product.synthesize)
         .make(sd => {
             sd.url = `${_util.api(sd)}/products/${sd.product.id}/images.json`
 
@@ -110,7 +116,7 @@ create_document.method = "product.image.create_document"
 create_document.description = `Create a new Image from self.document`
 create_document.requires = {
     shopify: _.is.shopify,
-    product: _.is.Dictionary,
+    product: _.is.shopify.synthesize,
 
     document: _.is.Buffer,
     document_media_type: x => _.is.String(x) && x.startsWith("image/"),

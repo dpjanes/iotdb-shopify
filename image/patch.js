@@ -55,16 +55,12 @@ patch.method = "image.patch"
 patch.description = `Patch Image`
 patch.requires = {
     shopify: _.is.shopify,
-    image: {
-        product_id: _.is.Integer,
-        id: _.is.Integer,
-    },
+    image: _.is.shopify.image,
 }
 patch.accepts = {
-    image: _.is.JSON,
 }
 patch.produces = {
-    image: _.is.JSON,
+    image: _.is.shopify.image,
 }
 patch.params = {
     image: _.p.normal,

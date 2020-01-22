@@ -27,6 +27,7 @@ const fs = require("iotdb-fs")
 const shopify = require("..")
 
 const minimist = require("minimist")
+const path = require("path")
 
 const shopifyd = require("./cfg/shopify.json")
 
@@ -85,7 +86,8 @@ if (action("image.list")) {
         verbose: true,
     })
         .then(shopify.initialize)
-        .then(shopify.image.get.p(ad.id || IMAGE_ID))
+        .then(shopify.image.get.p(PRODUCT_ID, IMAGE_ID))
+        /*
         .make(sd => {
             console.log("+", "old", sd.image.option1)
 
@@ -101,9 +103,10 @@ if (action("image.list")) {
                 option1: sd.image.option1,
             }
         })
+        */
         .then(shopify.image.patch)
         .make(sd => {
-            console.log("+", "new", sd.image.title)
+            console.log("+", "new", sd.image)
         })
         .except(_.error.log)
 } else if (action("image.create")) {
@@ -113,9 +116,8 @@ if (action("image.list")) {
     })
         .then(shopify.initialize)
         .then(shopify.product.synthesize.p(ad.id || PRODUCT_ID)) // you could also get
-        .then(shopify.image.create.p(null, {
-            option1: "New Variant " + _.timestamp.make(),
-        }))
+        .then(fs.read.p(path.join(__dirname, "../test/data/sample-1.jpg")))
+        .then(shopify.image.create.document)
         .make(sd => {
             console.log("+", sd.image)
         })
@@ -127,18 +129,16 @@ if (action("image.list")) {
     })
         .then(shopify.initialize)
         .then(shopify.product.synthesize.p(ad.id || PRODUCT_ID))
+        .then(fs.read.p(path.join(__dirname, "../test/data/sample-1.jpg")))
+        .then(shopify.image.create.document)
+        .add("image:aside")
 
-        .then(shopify.image.create.p(null, {
-            option1: "Delete Variant " + _.timestamp.make(),
-        }))
-        .make(sd => {
-            console.log("+", "created", sd.image)
-            sd.aside = sd.image.id
-        })
-        .log("deleting")
+        .log("deleting", "image")
         .then(shopify.image.delete)
+
         .log("get")
-        .add("aside:image_id")
+        .then(shopify.product.synthesize.p(ad.id || PRODUCT_ID))
+        .add("aside:image")
         .then(shopify.image.get)
 
         .make(sd => {

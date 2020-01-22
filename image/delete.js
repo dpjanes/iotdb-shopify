@@ -47,7 +47,7 @@ delete_.method = "image.delete"
 delete_.description = `Delete Image`
 delete_.requires = {
     shopify: _.is.shopify,
-    image: _.is.Dictionary,
+    image: _.is.shopify.image,
 }
 delete_.produces = {
 }
