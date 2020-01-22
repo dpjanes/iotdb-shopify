@@ -54,7 +54,7 @@ const count = _.promise((self, done) => {
 count.method = "product.count"
 count.description = `Count products`
 count.requires = {
-    shopify: _.is.Dictionary,
+    shopify: _.is.shopify,
 }
 count.accepts = {
     query: _.is.Dictionary,

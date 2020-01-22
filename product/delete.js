@@ -52,8 +52,8 @@ const delete_ = _.promise((self, done) => {
 delete_.method = "product.delete"
 delete_.description = `Delete a Product`
 delete_.requires = {
-    shopify: _.is.Dictionary,
-    product: _.is.shopify.flexible,
+    shopify: _.is.shopify,
+    product: _.is.shopify.makes_id,
 }
 delete_.produces = {
 }

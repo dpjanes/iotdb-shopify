@@ -31,11 +31,14 @@ const _util = require("../lib/_util")
 /**
  */
 const get = _.promise((self, done) => {
+    const shopify = require("..")
+
     _.promise(self)
         .validate(get)
 
+        .then(shopify.variant.synthesize)
         .make(sd => {
-            sd.url = `${_util.api(sd)}/variants/${sd.variant_id}.json`
+            sd.url = `${_util.api(sd)}/variants/${sd.variant.id}.json`
         })
         .then(fetch.get)
         .then(fetch.go.json)
@@ -51,13 +54,13 @@ get.method = "variant.get"
 get.description = `Get a Variant`
 get.requires = {
     shopify: _.is.Dictionary,
-    variant_id: _.is.Integer,
+    variant: _.is.shopify.flexible,
 }
 get.produces = {
-    variant: _.is.JSON,
+    variant: _.is.shopify.variant,
 }
 get.params = {
-    variant_id: _.p.normal,
+    variant: _.p.normal,
 }
 get.p = _.p(get)
 

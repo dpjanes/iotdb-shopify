@@ -58,14 +58,14 @@ create.method = "variant.create"
 create.description = `Create a new Variant`
 create.requires = {
     shopify: _.is.Dictionary,
-    product: [ _.is.Integer, _.is.String, _.is.Dictionary, ],
-    variant: _.is.Dictionary,
+    product: _.is.shopify.flexible,
+    variant: _.is.shopify.data,
 }
 create.accepts = {
-    variant: _.is.JSON,
+    variant: _.is.shopify.data,
 }
 create.produces = {
-    variant: _.is.JSON,
+    variant: _.is.shopify.variant,
 }
 create.params = {
     product: _.p.normal,

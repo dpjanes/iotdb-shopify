@@ -55,7 +55,7 @@ const list = _.promise((self, done) => {
 
 list.method = "product.list"
 list.requires = {
-    shopify: _.is.Dictionary,
+    shopify: _.is.shopift,
 }
 list.accepts = {
     pager: _.is.String,

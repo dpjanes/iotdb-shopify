@@ -54,16 +54,16 @@ const create = _.promise((self, done) => {
 create.method = "product.create"
 create.description = `Create a new Product`
 create.requires = {
-    shopify: _.is.Dictionary,
+    shopify: _.is.shopify,
     product: {
         title: _.is.String,
     },
 }
 create.accepts = {
-    product: _.is.JSON,
+    product: _.is.shopify.data,
 }
 create.produces = {
-    product: _.is.shopify,
+    product: _.is.shopify.product,
 }
 create.params = {
     product: _.p.normal,

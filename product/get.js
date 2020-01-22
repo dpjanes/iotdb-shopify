@@ -53,11 +53,11 @@ const get = _.promise((self, done) => {
 get.method = "product.by.id"
 get.description = `Get a Product`
 get.requires = {
-    shopify: _.is.Dictionary,
-    product: _.is.shopify.flexible,
+    shopify: _.is.shopify,
+    product: _.is.shopify.makes_id,
 }
 get.produces = {
-    product: _.is.shopify,
+    product: _.is.shopify.product,
 }
 get.params = {
     product: _.p.normal,

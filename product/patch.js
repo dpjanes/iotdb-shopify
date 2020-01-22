@@ -54,13 +54,13 @@ const patch = _.promise((self, done) => {
 patch.method = "product.patch"
 patch.description = `Patch Product`
 patch.requires = {
-    shopify: _.is.Dictionary,
-    product: _.is.shopify,
+    shopify: _.is.shopify,
+    product: _.is.shopify.has_id,
 }
 patch.accepts = {
 }
 patch.produces = {
-    product: _.is.shopify,
+    product: _.is.shopify.product,
 }
 patch.params = {
     product: _.p.normal,
