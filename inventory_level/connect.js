@@ -59,7 +59,7 @@ const connect = _.promise((self, done) => {
 connect.method = "inventory_level.connect"
 connect.description = `Connect a Inventory Level to a Location`
 connect.requires = {
-    shopify: _.is.Dictionary,
+    shopify: _.is.shopify,
     inventory_item: [ _.is.Integer, _.is.String, _.is.Dictionary, ], 
     location: [ _.is.Integer, _.is.String, _.is.Dictionary, ], 
 }

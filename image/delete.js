@@ -46,7 +46,7 @@ const delete_ = _.promise((self, done) => {
 delete_.method = "image.delete"
 delete_.description = `Delete Image`
 delete_.requires = {
-    shopify: _.is.Dictionary,
+    shopify: _.is.shopify,
     image: _.is.Dictionary,
 }
 delete_.produces = {

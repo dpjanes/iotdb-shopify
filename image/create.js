@@ -56,7 +56,7 @@ const create = _.promise((self, done) => {
 create.method = "image.create"
 create.description = `Create a new Image`
 create.requires = {
-    shopify: _.is.Dictionary,
+    shopify: _.is.shopify,
     product: _.is.Dictionary,
     image: _.is.Dictionary,
 }
@@ -109,7 +109,7 @@ const create_document = _.promise((self, done) => {
 create_document.method = "product.image.create_document"
 create_document.description = `Create a new Image from self.document`
 create_document.requires = {
-    shopify: _.is.Dictionary,
+    shopify: _.is.shopify,
     product: _.is.Dictionary,
 
     document: _.is.Buffer,

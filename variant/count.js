@@ -53,7 +53,7 @@ const count = _.promise((self, done) => {
 count.method = "variant.count"
 count.description = `Count the Variants of a Product`
 count.requires = {
-    shopify: _.is.Dictionary,
+    shopify: _.is.shopify,
     product: [ _.is.Integer, _.is.String, _.is.Dictionary, ],
 }
 count.accepts = {

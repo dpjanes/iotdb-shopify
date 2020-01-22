@@ -53,7 +53,7 @@ const get = _.promise((self, done) => {
 get.method = "image.get"
 get.description = `Get Image`
 get.requires = {
-    shopify: _.is.Dictionary,
+    shopify: _.is.shopify,
     product: _.is.Integer,
     image_id: _.is.Integer,
 }

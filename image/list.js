@@ -56,7 +56,7 @@ const list = _.promise((self, done) => {
 list.method = "image.list"
 list.description = `List the Images of a Product`
 list.requires = {
-    shopify: _.is.Dictionary,
+    shopify: _.is.shopify,
     product: [ _.is.Integer, _.is.String, _.is.Dictionary, ],
 }
 list.accepts = {

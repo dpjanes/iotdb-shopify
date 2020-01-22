@@ -54,7 +54,7 @@ const patch = _.promise((self, done) => {
 patch.method = "variant.patch"
 patch.description = `Patch Variant`
 patch.requires = {
-    shopify: _.is.Dictionary,
+    shopify: _.is.shopify,
     variant: {
         id: _.is.Integer,
     },

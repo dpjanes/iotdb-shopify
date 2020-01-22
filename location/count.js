@@ -49,7 +49,7 @@ const count = _.promise((self, done) => {
 count.method = "location.count"
 count.description = `Count Locations`
 count.requires = {
-    shopify: _.is.Dictionary,
+    shopify: _.is.shopify,
 }
 count.accepts = {
 }

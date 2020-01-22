@@ -53,7 +53,7 @@ const count = _.promise((self, done) => {
 count.method = "image.count"
 count.description = `Count the Images of a Product`
 count.requires = {
-    shopify: _.is.Dictionary,
+    shopify: _.is.shopify,
     product: [ _.is.Integer, _.is.String, _.is.Dictionary, ],
 }
 count.accepts = {

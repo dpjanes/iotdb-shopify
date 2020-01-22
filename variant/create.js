@@ -57,7 +57,7 @@ const create = _.promise((self, done) => {
 create.method = "variant.create"
 create.description = `Create a new Variant`
 create.requires = {
-    shopify: _.is.Dictionary,
+    shopify: _.is.shopify,
     product: _.is.shopify.flexible,
     variant: _.is.shopify.data,
 }

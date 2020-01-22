@@ -54,7 +54,7 @@ const patch = _.promise((self, done) => {
 patch.method = "image.patch"
 patch.description = `Patch Image`
 patch.requires = {
-    shopify: _.is.Dictionary,
+    shopify: _.is.shopify,
     image: {
         product_id: _.is.Integer,
         id: _.is.Integer,
