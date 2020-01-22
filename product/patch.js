@@ -55,15 +55,12 @@ patch.method = "product.patch"
 patch.description = `Patch Product`
 patch.requires = {
     shopify: _.is.Dictionary,
-    product: {
-        id: _.is.Integer,
-    },
+    product: _.is.shopify,
 }
 patch.accepts = {
-    product: _.is.JSON,
 }
 patch.produces = {
-    product: _.is.JSON,
+    product: _.is.shopify,
 }
 patch.params = {
     product: _.p.normal,

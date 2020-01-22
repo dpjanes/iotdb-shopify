@@ -63,7 +63,7 @@ create.accepts = {
     product: _.is.JSON,
 }
 create.produces = {
-    product: _.is.JSON,
+    product: _.is.shopify,
 }
 create.params = {
     product: _.p.normal,

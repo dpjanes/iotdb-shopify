@@ -145,7 +145,7 @@ if (action("product.list")) {
         .then(shopify.product.delete)
 
         .log("get")
-        .add("aside:product_id")
+        .add("aside:product")
         .then(shopify.product.get)
         .make(sd => {
             console.log("+", "after-delete", sd.product)
