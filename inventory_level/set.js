@@ -1,9 +1,9 @@
 /*
- *  inventory_level/connect.js
+ *  inventory_level/set.js
  *
  *  David Janes
  *  IOTDB.org
- *  2020-01-21
+ *  2020-01-23
  *
  *  Copyright (2013-2020) David P. Janes
  *
@@ -30,21 +30,17 @@ const _util = require("../lib/_util")
 
 /**
  */
-const connect = _.promise((self, done) => {
+const set = _.promise((self, done) => {
     const shopify = require("..")
 
     _.promise(self)
-        .validate(connect)
+        .validate(set)
 
         .then(shopify.location.synthesize)
         .then(shopify.inventory_item.synthesize)
         .make(sd => {
-            sd.url = `${_util.api(sd)}/inventory_levels/connect.json`
-
-            sd.json = {
-                inventory_item_id: sd.inventory_item.id,
-                location_id: sd.location.id,
-            }
+            sd.url = `${_util.api(sd)}/inventory_levels/set.json`
+            sd.json = sd.inventory_level
         })
         .then(fetch.post)
         .then(fetch.body.json)
@@ -53,28 +49,33 @@ const connect = _.promise((self, done) => {
             sd.inventory_level = sd.json && sd.json.inventory_level || null
         })
 
-        .end(done, self, connect)
+        .end(done, self, set)
 })
 
-connect.method = "inventory_level.connect"
-connect.description = `Connect a Inventory Level to a Location`
-connect.requires = {
+set.method = "inventory_level.set"
+set.description = `Connect a Inventory Level to a Location`
+set.requires = {
     shopify: _.is.shopify,
-    inventory_item: _.is.shopify.synthesize,
-    location: _.is.shopify.synthesize,
+    inventory_level: {
+        inventory_item_id: _.is.Integer,
+        location_id: _.is.Integer,
+        available: _.is.Integer,
+    },
 }
-connect.accepts = {
+set.accepts = {
+    inventory_level: {
+        disconnect_if_necessary: _.is.Boolean,
+    },
 }
-connect.produces = {
+set.produces = {
     inventory_level: _.is.shopify.inventory_level,
 }
-connect.params = {
-    location: _.p.normal,
-    inventory_item: _.p.normal,
+set.params = {
+    inventory_level: _.p.normal,
 }
-connect.p = _.p(connect)
+set.p = _.p(set)
 
 /**
  *  API
  */
-exports.connect = connect
+exports.set = set

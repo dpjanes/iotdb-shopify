@@ -25,6 +25,7 @@
 module.exports = Object.assign(
     {},
     require("./connect"),
+    require("./set"),
     {}
 )
 
