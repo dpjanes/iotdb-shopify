@@ -39,7 +39,9 @@ const patch = _.promise((self, done) => {
         .then(shopify.inventory_item.synthesize)
         .make(sd => {
             sd.url = `${_util.api(sd)}/inventory_items/${sd.inventory_item.id}.json`
-            sd.json = sd.inventory_item
+            sd.json = {
+                "inventory_item": sd.inventory_item,
+            }
         })
         .then(fetch.put)
         .then(fetch.body.json)
