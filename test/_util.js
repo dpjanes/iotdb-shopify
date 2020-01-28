@@ -43,7 +43,7 @@ const ok_error = (done, code) => error => {
  */
 const initialize = _.promise((self, done) => {
     _.promise(self)
-        .add("shopifyd", require("./data/shopify.json"))
+        .add("shopify$cfg", require("./cfg/shopify.json"))
         .then(shopify.initialize)
         .end(done, self, "shopify")
 })
